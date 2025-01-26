@@ -1,19 +1,20 @@
 [project]
 name = "icesat2-boreal-stac"
-description = "Create STAC Items for icesat2 boreal"
-requires-python = ">=3.8"
+description = "Create STAC Items for icesat2-boreal data products"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
+    {name = "Henry Rodman", email = "henry@developmentseed.com"},
     {name = "Emile Tenezakis", email = "emile@developmentseed.com"},
 ]
 classifiers = [
     "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: GIS",
 ]
 dynamic = ["version"]
@@ -21,21 +22,23 @@ dependencies = [
     "pystac",
     "rio-stac",
     "fire",
-    "fsspec",
     "s3fs",
     "pydantic-settings",
     "pystac[validation]",
+    "boto3",
 ]
 
-
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "black",
-    "isort",
-    "flake8",
-    "ruff"
+    "codespell==2.4.0",
+    "ipython>=8.12.3",
+    "moto[s3]>=5.0.27",
+    "mypy==1.14.1",
+    "pre-commit>=3.5.0",
+    "pytest>=8.3.4",
+    "pytest-cov>=5.0.0",
+    "ruff==0.9.3",
 ]
-
 
 [project.urls]
 "Source" = "https://github.com/MAAP-Project/icesat2-boreal-stac"
@@ -68,12 +71,6 @@ exclude_lines = [
   "if TYPE_CHECKING:",
 ]
 
-[tool.isort]
-profile = "black"
-known_first_party = ["icesat2_boreal_stac"]
-known_third_party = ["pystac"]
-default_section = "THIRDPARTY"
-
 [tool.mypy]
 no_strict_optional = true
 
@@ -90,3 +87,4 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
     "B905",  # ignore zip() without an explicit strict= parameter, only support with python >3.10
 ]
+
