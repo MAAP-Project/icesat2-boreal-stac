@@ -1,0 +1,203 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/raster/v1.1.0/schema.json"
+  ],
+  "id": "boreal_agb_2020_202411251732556086_0000004",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          8.748942733447695,
+          57.14696993683849
+        ],
+        [
+          7.483984605164516,
+          57.586106963239565
+        ],
+        [
+          6.672362303301861,
+          56.91323098125322
+        ],
+        [
+          7.9237289872292616,
+          56.48186687643973
+        ],
+        [
+          8.748942733447695,
+          57.14696993683849
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    6.672362303301861,
+    56.48186687643973,
+    8.748942733447695,
+    57.586106963239565
+  ],
+  "properties": {
+    "start_datetime": "2020-01-01T00:00:00+00:00",
+    "end_datetime": "2020-12-31T23:59:59+00:00",
+    "created_datetime": "2024-01-25T00:11:00+00:00",
+    "proj:epsg": null,
+    "proj:geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -2241478.0000000047,
+            9243304.00000001
+          ],
+          [
+            -2151478.0000000047,
+            9243304.00000001
+          ],
+          [
+            -2151478.0000000047,
+            9333304.00000001
+          ],
+          [
+            -2241478.0000000047,
+            9333304.00000001
+          ],
+          [
+            -2241478.0000000047,
+            9243304.00000001
+          ]
+        ]
+      ]
+    },
+    "proj:bbox": [
+      -2241478.0000000047,
+      9243304.00000001,
+      -2151478.0000000047,
+      9333304.00000001
+    ],
+    "proj:shape": [
+      3000,
+      3000
+    ],
+    "proj:transform": [
+      30.0,
+      0.0,
+      -2241478.0000000047,
+      0.0,
+      -30.0,
+      9333304.00000001,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "proj:wkt2": "PROJCS[\"unnamed\",GEOGCS[\"GRS 1980(IUGG, 1980)\",DATUM[\"unknown\",SPHEROID[\"GRS80\",6378137,298.257222101],TOWGS84[0,0,0,0,0,0,0]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",40],PARAMETER[\"longitude_of_center\",180],PARAMETER[\"standard_parallel_1\",50],PARAMETER[\"standard_parallel_2\",70],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "datetime": "2020-07-01T23:59:59.500000Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density"
+    }
+  ],
+  "assets": {
+    "cog": {
+      "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "raster:bands": [
+        {
+          "data_type": "float32",
+          "scale": 1.0,
+          "offset": 0.0,
+          "sampling": "area",
+          "nodata": "nan",
+          "statistics": {
+            "mean": 25.231708351145954,
+            "minimum": 0.7163138389587402,
+            "maximum": 205.04116821289062,
+            "stddev": 25.423447464575105,
+            "valid_percent": 3.144877777777778
+          },
+          "histogram": {
+            "count": 11,
+            "min": 0.7163138389587402,
+            "max": 205.04116821289062,
+            "buckets": [
+              179356,
+              50533,
+              23795,
+              15292,
+              8521,
+              3862,
+              1256,
+              357,
+              57,
+              10
+            ]
+          }
+        },
+        {
+          "data_type": "float32",
+          "scale": 1.0,
+          "offset": 0.0,
+          "sampling": "area",
+          "nodata": "nan",
+          "statistics": {
+            "mean": 6.358231551128997,
+            "minimum": 0.6042453646659851,
+            "maximum": 51.516971588134766,
+            "stddev": 4.209226065753964,
+            "valid_percent": 3.144877777777778
+          },
+          "histogram": {
+            "count": 11,
+            "min": 0.6042453646659851,
+            "max": 51.516971588134766,
+            "buckets": [
+              158614,
+              84508,
+              28684,
+              9201,
+              1717,
+              243,
+              43,
+              15,
+              12,
+              2
+            ]
+          }
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "training_data_csv": {
+      "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004_train_data.csv",
+      "type": "text/csv",
+      "title": "Tabular training data",
+      "description": "Tabular training data with latitude, longitude, and biomass observations",
+      "roles": [
+        "data"
+      ]
+    }
+  },
+  "collection": "icesat2-boreal-v2.1-agb"
+}
