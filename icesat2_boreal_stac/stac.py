@@ -1,3 +1,5 @@
+"""STAC metadata methods for icesat2-boreal collections"""
+
 import os
 from datetime import datetime, timedelta, timezone
 from enum import Enum
@@ -59,24 +61,47 @@ class AssetType(str, Enum):
         return {member.value for member in cls}
 
 
+# specific text fields for each variable/asset
+TEXT = {
+    Variable.AGB: {
+        AssetType.COG: {
+            "title": "Gridded predictions of aboveground biomass (Mg/ha)",
+            "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+        },
+        AssetType.TRAINING_DATA_CSV: {
+            "description": "Tabular training data with latitude, longitude, and "
+            "biomass observations",
+        },
+    },
+    Variable.HT: {
+        AssetType.COG: {
+            "title": "Gridded predictions of vegetation height (m)",
+            "description": "Gridded predictions of vegetation height (m)",
+        },
+        AssetType.TRAINING_DATA_CSV: {
+            "description": "Tabular training data with latitude, longitude, and "
+            "height observations",
+        },
+    },
+}
+
+
 ITEM_ASSET_PROPERTIES = {
     AssetType.COG: {
         "type": MediaType.COG,
         "roles": ["data"],
-        "title": "Gridded estimates of {variable}",
-        "description": "Gridded estimates of {variable}",
+    },
+    AssetType.TRAINING_DATA_CSV: {
+        "type": CSV_MEDIA_TYPE,
+        "roles": ["data"],
+        "title": "Tabular training data",
     },
     AssetType.MODEL: {
         "type": RDS_MEDIA_TYPE,
         "roles": ["model"],
         "title": "Prediction model",
-        "description": "Random forest model used to generate predictions for this item, stored as an .Rds",
-    },
-    AssetType.TRAINING_DATA_CSV: {
-        "type": CSV_MEDIA_TYPE,
-        "roles": ["data"],
-        "title": "Model training data for {variable}",
-        "description": "Observed values of {variable} with geographic coordinates used for training models",
+        "description": "Random forest model used to generate predictions for this "
+        "item, stored as an .Rds",
     },
     AssetType.CONTEXT_JSON: {
         "type": MediaType.JSON,
@@ -102,10 +127,8 @@ ITEM_ASSETS = {
     variable: {
         asset_type: AssetDefinition(
             {
-                key: value.format(variable=variable.value)
-                if isinstance(value, str)
-                else value
-                for key, value in properties.items()
+                **properties,
+                **TEXT[variable].get(asset_type, {}),
             }
         )
         for asset_type, properties in ITEM_ASSET_PROPERTIES.items()
@@ -115,7 +138,8 @@ ITEM_ASSETS = {
 
 
 def cog_key_to_asset_keys(cog_key: str) -> Dict[AssetType, str]:
-    """Given an S3 key to a cog asset, return a dictionary of all associated assets and their storage keys"""
+    """Given an S3 key to a cog asset, return a dictionary of all associated assets and
+    their storage keys"""
     if not cog_key.startswith("s3://"):
         raise ValueError(f"{cog_key} is not a valid s3 key")
 
@@ -138,7 +162,7 @@ def cog_key_to_asset_keys(cog_key: str) -> Dict[AssetType, str]:
         # check each asset type for a match
         for asset_type in AssetType:
             if asset_type.matches_file(filename):
-                asset_keys[asset_type.value] = full_s3_path
+                asset_keys[asset_type] = full_s3_path
 
     # verify all required assets were found
     missing_assets = AssetType.required_assets() - set(asset_keys.keys())
@@ -153,6 +177,7 @@ def create_item(cog_key: str) -> Item:
     asset_keys = cog_key_to_asset_keys(cog_key)
 
     item_id = os.path.splitext(os.path.basename(cog_key))[0]
+    print("item id", item_id)
 
     # parse id into properties
     id_parts = item_id.split("_")
@@ -167,7 +192,7 @@ def create_item(cog_key: str) -> Item:
         item_start_datetime + relativedelta(years=1) - timedelta(seconds=1)
     )
 
-    # generate dictionary of expected assets
+    # generate dictionary of assets
     item_assets = {
         asset: ITEM_ASSETS[variable][asset].create_asset(key)
         for asset, key in asset_keys.items()
@@ -187,10 +212,13 @@ def create_item(cog_key: str) -> Item:
             ).isoformat(),
         },
         assets=item_assets,
+        # skip with_raster because when assets is specified, raster info does not get
+        # attached to the asset
         with_raster=False,
         with_proj=True,
     )
 
+    # retrieve the raster info separately
     with rasterio.open(cog_key) as src:
         raster_info = {"raster:bands": get_raster_info(src, max_size=RASTER_SIZE)}
 

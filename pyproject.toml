@@ -75,16 +75,13 @@ exclude_lines = [
 no_strict_optional = true
 
 [tool.ruff]
-select = [
+lint.select = [
     "D1",  # pydocstyle errors
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
     "C",  # flake8-comprehensions
     "B",  # flake8-bugbear
 ]
-ignore = [
-    "E501",  # line too long, handled by black
-    "B008",  # do not perform function calls in argument defaults
-    "B905",  # ignore zip() without an explicit strict= parameter, only support with python >3.10
-]
 
+line-length = 88
+indent-width = 4

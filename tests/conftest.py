@@ -1,8 +1,12 @@
+"""Test configuration"""
+
 import os
 
 import boto3
 import pytest
 from moto import mock_aws
+
+from icesat2_boreal_stac.stac import AssetType
 
 
 @pytest.fixture(scope="function")
@@ -17,6 +21,7 @@ def aws_credentials():
 
 @pytest.fixture()
 def test_cog_key():
+    """A fake S3 key for a COG"""
     return "test/path/example.tif"
 
 
@@ -42,3 +47,22 @@ def test_bucket(aws_credentials, test_cog_key):
             s3.put_object(Bucket=bucket_name, Key=key, Body=content)
 
         yield bucket_name
+
+
+@pytest.fixture
+def mock_cog_key_to_asset_keys(monkeypatch):
+    """Skip S3 operations and just return COG key"""
+
+    def mock_cog_key_to_asset_keys(cog_key: str):
+        return {
+            AssetType.COG: cog_key,
+            AssetType.TRAINING_DATA_CSV: cog_key.replace(".tif", "_train_data.csv"),
+            AssetType.MODEL: cog_key.replace(".tif", "_model.Rds"),
+            AssetType.CONTEXT_JSON: cog_key.replace(".tif", "_context.json"),
+            AssetType.DATASET_JSON: cog_key.replace(".tif", "_dataset.json"),
+            AssetType.MET_JSON: cog_key.replace(".tif", "_met.json"),
+        }
+
+    monkeypatch.setattr(
+        "icesat2_boreal_stac.stac.cog_key_to_asset_keys", mock_cog_key_to_asset_keys
+    )
