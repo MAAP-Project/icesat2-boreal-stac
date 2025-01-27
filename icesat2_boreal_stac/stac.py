@@ -9,7 +9,18 @@ import boto3
 import rasterio
 import rio_stac
 from dateutil.relativedelta import relativedelta
-from pystac import Item, ItemAssetDefinition, MediaType
+from pystac import (
+    Collection,
+    Extent,
+    Item,
+    ItemAssetDefinition,
+    Link,
+    MediaType,
+    SpatialExtent,
+    TemporalExtent,
+)
+from pystac.extensions.render import Render, RenderExtension
+from pystac.extensions.version import VersionRelType
 from rio_stac.stac import get_raster_info
 
 VERSION = "v2.1"
@@ -19,6 +30,13 @@ RDS_MEDIA_TYPE = "application/x-rds"
 CSV_MEDIA_TYPE = "text/csv"
 
 RASTER_SIZE = 3000
+BBOX = [-180, 51.6, 180, 78]
+TEMPORAL_INTERVALS = [
+    [
+        datetime(2020, 1, 1, tzinfo=timezone.utc),
+        datetime(2021, 1, 1, tzinfo=timezone.utc) - timedelta(seconds=1),
+    ]
+]
 
 
 class Variable(str, Enum):
@@ -55,6 +73,21 @@ class AssetType(str, Enum):
 
 
 # specific text fields for each variable/asset
+COLLECTION_DESCRIPTIONS = {
+    Variable.AGB: {
+        "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
+        "description": "Gridded predictions of aboveground biomass (Mg/ha) "
+        "for boreal region derived from ICESat-2 and Harmonized Landsat Sentinel 2 "
+        "data.",
+    },
+    Variable.HT: {
+        "title": "Icesat2 Boreal v2.1: Vegetation Height",
+        "description": "Gridded predictions of vegetation height (m) "
+        "for boreal region derived from ICESat-2 and Harmonized Landsat Sentinel 2 "
+        "data.",
+    },
+}
+
 TEXT = {
     Variable.AGB: {
         AssetType.COG: {
@@ -75,6 +108,33 @@ TEXT = {
             "description": "Tabular training data with latitude, longitude, and "
             "height observations",
         },
+    },
+}
+
+RENDERS = {
+    Variable.AGB: {
+        "agb": Render(
+            {
+                "title": "Aboveground biomass (Mg/ha)",
+                "assets": [AssetType.COG],
+                "expression": "cog_b1",
+                "rescale": [[0, 125]],
+                "colormap_name": "viridis",
+                "minmax_zoom": [6, 18],
+            }
+        )
+    },
+    Variable.HT: {
+        "ht": Render(
+            {
+                "title": "Vegetation height (m)",
+                "assets": [AssetType.COG],
+                "expression": "cog_b1",
+                "rescale": [[0, 30]],
+                "colormap_name": "inferno",
+                "minmax_zoom": [6, 18],
+            }
+        )
     },
 }
 
@@ -147,12 +207,52 @@ def cog_key_to_asset_keys(cog_key: str) -> Dict[AssetType, str]:
     return asset_keys
 
 
+def create_collection(variable: Variable) -> Collection:
+    """Create STAC collection object"""
+    collection_id = COLLECTION_ID_FORMAT.format(
+        version=VERSION, variable=variable.value
+    )
+
+    collection = Collection(
+        id=collection_id,
+        title=COLLECTION_DESCRIPTIONS[variable]["title"],
+        description=COLLECTION_DESCRIPTIONS[variable]["description"],
+        extent=Extent(
+            spatial=SpatialExtent(bboxes=[BBOX]),
+            temporal=TemporalExtent(intervals=TEMPORAL_INTERVALS),
+        ),
+        license="CC-BY",
+    )
+
+    collection.item_assets = {
+        item_asset.value: asset for item_asset, asset in ITEM_ASSETS[variable].items()
+    }
+
+    # add version extension
+    collection.ext.add("version")
+    collection.ext.version.version = VERSION
+    collection.ext.version.deprecated = False
+
+    collection.add_link(
+        Link(
+            rel=VersionRelType.PREDECESSOR,
+            target="https://stac.maap-project.org/collections/icesat2-boreal",
+            title="Previous version",
+        )
+    )
+
+    # add render extension
+    collection.ext.add("render")
+    RenderExtension.ext(collection).apply(RENDERS[variable])
+
+    return collection
+
+
 def create_item(cog_key: str) -> Item:
     """Create a STAC item given the S3 key for a COG"""
     asset_keys = cog_key_to_asset_keys(cog_key)
 
     item_id = os.path.splitext(os.path.basename(cog_key))[0]
-    print("item id", item_id)
 
     # parse id into properties
     id_parts = item_id.split("_")
@@ -177,6 +277,9 @@ def create_item(cog_key: str) -> Item:
         source=asset_keys[AssetType.COG],
         collection=collection_id,
         id=item_id,
+        input_datetime=(
+            item_start_datetime + (item_end_datetime - item_start_datetime) / 2
+        ),
         properties={
             "start_datetime": item_start_datetime.replace(
                 tzinfo=timezone.utc

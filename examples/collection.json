@@ -1,29 +1,79 @@
 {
-  "id": "icesat2-boreal",
   "type": "Collection",
+  "id": "icesat2-boreal-v2.1-ht",
+  "stac_version": "1.1.0",
+  "description": "Gridded predictions of vegetation height (m) for boreal region derived from ICESat-2 and Harmonized Landsat Sentinel 2 data.",
   "links": [
     {
-      "rel": "items",
-      "type": "application/geo+json",
-      "href": "https://stac.maap-project.org/collections/icesat2-boreal/items"
-    },
-    {
-      "rel": "parent",
-      "type": "application/json",
-      "href": "https://stac.maap-project.org/"
-    },
-    {
       "rel": "root",
+      "href": "./collection.json",
       "type": "application/json",
-      "href": "https://stac.maap-project.org/"
+      "title": "Icesat2 Boreal v2.1: Vegetation Height"
     },
     {
-      "rel": "self",
-      "type": "application/json",
-      "href": "https://stac.maap-project.org/collections/icesat2-boreal"
+      "rel": "predecessor-version",
+      "href": "https://stac.maap-project.org/collections/icesat2-boreal",
+      "title": "Previous version"
+    },
+    {
+      "rel": "item",
+      "href": "./boreal_ht_2020_202501131736787421_0000004/boreal_ht_2020_202501131736787421_0000004.json",
+      "type": "application/geo+json"
     }
   ],
-  "title": "Gridded Boreal Aboveground Biomass Density c.2020 at 30m resolution",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
+  ],
+  "item_assets": {
+    "cog": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data"
+      ],
+      "title": "Gridded predictions of vegetation height (m)",
+      "description": "Gridded predictions of vegetation height (m)"
+    },
+    "training_data_csv": {
+      "type": "text/csv",
+      "roles": [
+        "data"
+      ],
+      "title": "Tabular training data",
+      "description": "Tabular training data with latitude, longitude, and height observations"
+    },
+    "model": {
+      "type": "application/x-rds",
+      "roles": [
+        "model"
+      ],
+      "title": "Prediction model",
+      "description": "Random forest model used to generate predictions for this item, stored as an .Rds"
+    }
+  },
+  "version": "v2.1",
+  "deprecated": false,
+  "renders": {
+    "ht": {
+      "title": "Vegetation height (m)",
+      "assets": [
+        "cog"
+      ],
+      "expression": "cog_b1",
+      "rescale": [
+        [
+          0,
+          30
+        ]
+      ],
+      "colormap_name": "inferno",
+      "minmax_zoom": [
+        6,
+        18
+      ]
+    }
+  },
+  "title": "Icesat2 Boreal v2.1: Vegetation Height",
   "extent": {
     "spatial": {
       "bbox": [
@@ -38,32 +88,11 @@
     "temporal": {
       "interval": [
         [
-          "2019-01-01T00:00:00.000Z",
-          "2021-01-01T00:00:00.000Z"
+          "2020-01-01T00:00:00Z",
+          "2020-12-31T23:59:59Z"
         ]
       ]
     }
   },
-  "license": "CC-BY",
-  "description": "Aboveground biomass density c.2020 gridded to 30m derived from ICESat-2, Harmonized Landsat-Sentinel2 and Copernicus DEM. Band 1 is the data band. Band 2 is the standard deviation.",
-  "item_assets": {
-    "csv": {
-      "type": "text/csv",
-      "roles": [
-        "data"
-      ],
-      "title": "CSV",
-      "description": "CSV of training data"
-    },
-    "tif": {
-      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
-      "roles": [
-        "data",
-        "layer"
-      ],
-      "title": "Cloud Optimized GeoTIFF of boreal data",
-      "description": "Cloud Optimized GeoTIFF of boreal data"
-    }
-  },
-  "stac_version": "1.0.0"
+  "license": "CC-BY"
 }

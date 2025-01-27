@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+"""Update STAC metadata example files"""
+
+import shutil
+from pathlib import Path
+
+from pystac import CatalogType
+
+from icesat2_boreal_stac.stac import Variable, create_collection, create_item
+
+root = Path(__file__).parents[1]
+examples = root / "examples"
+
+collection = create_collection(variable=Variable.HT)
+item = create_item(
+    cog_key="s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/Ht_H30_2020/full_run/2025/01/13/09/01/49/694207/boreal_ht_2020_202501131736787421_0000004.tif"
+)
+collection.add_item(item)
+
+collection.normalize_hrefs(str(examples))
+
+if examples.exists():
+    shutil.rmtree(examples)
+    examples.mkdir()
+collection.save(CatalogType.SELF_CONTAINED)

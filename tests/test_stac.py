@@ -6,7 +6,13 @@ from datetime import datetime, timezone
 import pytest
 from botocore.errorfactory import ClientError
 
-from icesat2_boreal_stac.stac import AssetType, cog_key_to_asset_keys, create_item
+from icesat2_boreal_stac.stac import (
+    AssetType,
+    Variable,
+    cog_key_to_asset_keys,
+    create_collection,
+    create_item,
+)
 
 
 def test_cog_key_to_asset_keys(test_cog_key, test_bad_cog_key, test_bucket) -> None:
@@ -48,3 +54,10 @@ def test_create_item(mock_cog_key_to_asset_keys) -> None:
     )
 
     assert all(asset_type.value in item.assets for asset_type in AssetType)
+
+
+@pytest.mark.parametrize("variable", list(Variable))
+def test_create_collection(variable: Variable) -> None:
+    """Test create_collection"""
+    collection = create_collection(variable)
+    assert collection.ext.render
