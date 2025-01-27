@@ -25,8 +25,14 @@ def test_cog_key():
     return "test/path/example.tif"
 
 
+@pytest.fixture()
+def test_bad_cog_key():
+    """A fake S3 key for a COG without the other required assets"""
+    return "test/badpath/example.tif"
+
+
 @pytest.fixture
-def test_bucket(aws_credentials, test_cog_key):
+def test_bucket(aws_credentials, test_cog_key, test_bad_cog_key):
     """Fixture that creates a mock S3 bucket with test data"""
     with mock_aws():
         s3 = boto3.client("s3")
@@ -38,9 +44,7 @@ def test_bucket(aws_credentials, test_cog_key):
             test_cog_key: b"fake tif content",
             "test/path/example_model.Rds": b"fake model content",
             "test/path/example_train_data.csv": b"fake training data",
-            "test/path/output.context.json": b"{}",
-            "test/path/output.dataset.json": b"{}",
-            "test/path/output.met.json": b"{}",
+            test_bad_cog_key: b"fake tif content",
         }
 
         for key, content in test_files.items():
@@ -58,9 +62,6 @@ def mock_cog_key_to_asset_keys(monkeypatch):
             AssetType.COG: cog_key,
             AssetType.TRAINING_DATA_CSV: cog_key.replace(".tif", "_train_data.csv"),
             AssetType.MODEL: cog_key.replace(".tif", "_model.Rds"),
-            AssetType.CONTEXT_JSON: cog_key.replace(".tif", "_context.json"),
-            AssetType.DATASET_JSON: cog_key.replace(".tif", "_dataset.json"),
-            AssetType.MET_JSON: cog_key.replace(".tif", "_met.json"),
         }
 
     monkeypatch.setattr(

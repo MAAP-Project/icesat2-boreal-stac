@@ -9,8 +9,7 @@ import boto3
 import rasterio
 import rio_stac
 from dateutil.relativedelta import relativedelta
-from pystac import Item, MediaType
-from pystac.extensions.item_assets import AssetDefinition
+from pystac import Item, ItemAssetDefinition, MediaType
 from rio_stac.stac import get_raster_info
 
 VERSION = "v2.1"
@@ -35,9 +34,6 @@ class AssetType(str, Enum):
     COG = "cog"
     MODEL = "model"
     TRAINING_DATA_CSV = "training_data_csv"
-    CONTEXT_JSON = "context_json"
-    DATASET_JSON = "dataset_json"
-    MET_JSON = "met_json"
 
     def get_file_pattern(self) -> str:
         """Returns the file pattern for this asset type"""
@@ -45,9 +41,6 @@ class AssetType(str, Enum):
             self.COG: ".tif",
             self.MODEL: "_model.Rds",
             self.TRAINING_DATA_CSV: "_train_data.csv",
-            self.CONTEXT_JSON: ".context.json",
-            self.DATASET_JSON: ".dataset.json",
-            self.MET_JSON: ".met.json",
         }
         return patterns[self]
 
@@ -103,29 +96,11 @@ ITEM_ASSET_PROPERTIES = {
         "description": "Random forest model used to generate predictions for this "
         "item, stored as an .Rds",
     },
-    AssetType.CONTEXT_JSON: {
-        "type": MediaType.JSON,
-        "roles": ["metadata"],
-        "title": "Context JSON",
-        "description": "Context JSON",
-    },
-    AssetType.DATASET_JSON: {
-        "type": MediaType.JSON,
-        "roles": ["metadata"],
-        "title": "Dataset JSON",
-        "description": "Dataset JSON",
-    },
-    AssetType.MET_JSON: {
-        "type": MediaType.JSON,
-        "roles": ["metadata"],
-        "title": "Met JSON",
-        "description": "Met JSON",
-    },
 }
 
 ITEM_ASSETS = {
     variable: {
-        asset_type: AssetDefinition(
+        asset_type: ItemAssetDefinition(
             {
                 **properties,
                 **TEXT[variable].get(asset_type, {}),

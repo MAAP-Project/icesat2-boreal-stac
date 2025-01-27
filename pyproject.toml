@@ -85,3 +85,6 @@ lint.select = [
 
 line-length = 88
 indent-width = 4
+
+[tool.pytest.ini_options]
+addopts = "-Werror --cov=icesat2_boreal_stac --cov-report=term-missing --cov-report=xml -vv"
