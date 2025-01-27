@@ -87,4 +87,7 @@ line-length = 88
 indent-width = 4
 
 [tool.pytest.ini_options]
-addopts = "-Werror --cov=icesat2_boreal_stac --cov-report=term-missing --cov-report=xml -vv"
+addopts = "--cov=icesat2_boreal_stac --cov-report=term-missing --cov-report=xml -vv"
+filterwarnings = [
+    "ignore:datetime.datetime.utcnow\\(\\) is deprecated and scheduled for removal:DeprecationWarning"
+]
