@@ -41,14 +41,6 @@
       ],
       "title": "Tabular training data",
       "description": "Tabular training data with latitude, longitude, and height observations"
-    },
-    "model": {
-      "type": "application/x-rds",
-      "roles": [
-        "model"
-      ],
-      "title": "Prediction model",
-      "description": "Random forest model used to generate predictions for this item, stored as an .Rds"
     }
   },
   "version": "v2.1",

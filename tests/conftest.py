@@ -61,7 +61,7 @@ def mock_cog_key_to_asset_keys(monkeypatch):
         return {
             AssetType.COG: cog_key,
             AssetType.TRAINING_DATA_CSV: cog_key.replace(".tif", "_train_data.csv"),
-            AssetType.MODEL: cog_key.replace(".tif", "_model.Rds"),
+            # AssetType.MODEL: cog_key.replace(".tif", "_model.Rds"),
         }
 
     monkeypatch.setattr(

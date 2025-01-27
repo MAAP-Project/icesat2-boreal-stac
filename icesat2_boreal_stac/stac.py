@@ -50,14 +50,14 @@ class AssetType(str, Enum):
     """Enumeration of all possible asset types that should be present"""
 
     COG = "cog"
-    MODEL = "model"
+    # MODEL = "model"
     TRAINING_DATA_CSV = "training_data_csv"
 
     def get_file_pattern(self) -> str:
         """Returns the file pattern for this asset type"""
         patterns = {
             self.COG: ".tif",
-            self.MODEL: "_model.Rds",
+            # self.MODEL: "_model.Rds",
             self.TRAINING_DATA_CSV: "_train_data.csv",
         }
         return patterns[self]
@@ -149,13 +149,13 @@ ITEM_ASSET_PROPERTIES = {
         "roles": ["data"],
         "title": "Tabular training data",
     },
-    AssetType.MODEL: {
-        "type": RDS_MEDIA_TYPE,
-        "roles": ["model"],
-        "title": "Prediction model",
-        "description": "Random forest model used to generate predictions for this "
-        "item, stored as an .Rds",
-    },
+    # AssetType.MODEL: {
+    #     "type": RDS_MEDIA_TYPE,
+    #     "roles": ["model"],
+    #     "title": "Prediction model",
+    #     "description": "Random forest model used to generate predictions for this "
+    #     "item, stored as an .Rds",
+    # },
 }
 
 ITEM_ASSETS = {

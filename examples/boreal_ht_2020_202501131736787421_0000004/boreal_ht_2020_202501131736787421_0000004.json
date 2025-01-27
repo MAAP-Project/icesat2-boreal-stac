@@ -189,15 +189,6 @@
         "data"
       ]
     },
-    "model": {
-      "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/Ht_H30_2020/full_run/2025/01/13/09/01/49/694207/boreal_ht_2020_202501131736787421_0000004_model.Rds",
-      "type": "application/x-rds",
-      "title": "Prediction model",
-      "description": "Random forest model used to generate predictions for this item, stored as an .Rds",
-      "roles": [
-        "model"
-      ]
-    },
     "training_data_csv": {
       "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/Ht_H30_2020/full_run/2025/01/13/09/01/49/694207/boreal_ht_2020_202501131736787421_0000004_train_data.csv",
       "type": "text/csv",
