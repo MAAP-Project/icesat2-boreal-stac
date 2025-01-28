@@ -77,14 +77,16 @@ COLLECTION_DESCRIPTIONS = {
     Variable.AGB: {
         "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
         "description": "Gridded predictions of aboveground biomass (Mg/ha) "
-        "for boreal region derived from ICESat-2 and Harmonized Landsat Sentinel 2 "
-        "data.",
+        "for the boreal region built from ICESat-2/ATL08 observations at 30m segment "
+        "lengths, 30m HLS multispectral data, 30m Copernicus GLO30 topography, and 30m "
+        "ESA Worldcover 2020 v1.0 land cover data.",
     },
     Variable.HT: {
         "title": "Icesat2 Boreal v2.1: Vegetation Height",
         "description": "Gridded predictions of vegetation height (m) "
-        "for boreal region derived from ICESat-2 and Harmonized Landsat Sentinel 2 "
-        "data.",
+        "for the boreal region built from ICESat-2/ATL08 observations at 30m segment "
+        "lengths, 30m HLS multispectral data, 30m Copernicus GLO30 topography, and 30m "
+        "ESA Worldcover 2020 v1.0 land cover data.",
     },
 }
 
@@ -236,7 +238,7 @@ def create_collection(variable: Variable) -> Collection:
             spatial=SpatialExtent(bboxes=[BBOX]),
             temporal=TemporalExtent(intervals=TEMPORAL_INTERVALS),
         ),
-        license="CC-BY",
+        license="CC-BY-NC-SA-4.0",
     )
 
     collection.item_assets = {
@@ -266,6 +268,7 @@ def create_collection(variable: Variable) -> Collection:
 def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
     """Create a STAC item given the S3 key for a COG"""
     asset_keys = cog_key_to_asset_keys(cog_key, copy_to)
+    cog_key = asset_keys[AssetType.COG]
 
     item_id = os.path.splitext(os.path.basename(cog_key))[0]
 
