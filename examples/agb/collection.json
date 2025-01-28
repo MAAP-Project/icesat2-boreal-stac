@@ -22,29 +22,10 @@
     }
   ],
   "stac_extensions": [
-    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
-    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json"
   ],
-  "item_assets": {
-    "cog": {
-      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
-      "roles": [
-        "data"
-      ],
-      "title": "Gridded predictions of aboveground biomass (Mg/ha)",
-      "description": "Gridded predictions of aboveground biomass (Mg/ha)"
-    },
-    "training_data_csv": {
-      "type": "text/csv",
-      "roles": [
-        "data"
-      ],
-      "title": "Tabular training data",
-      "description": "Tabular training data with latitude, longitude, and biomass observations"
-    }
-  },
-  "version": "v2.1",
-  "deprecated": false,
   "renders": {
     "agb": {
       "title": "Aboveground biomass (Mg/ha)",
@@ -65,6 +46,26 @@
       ]
     }
   },
+  "item_assets": {
+    "cog": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data"
+      ],
+      "title": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)"
+    },
+    "training_data_csv": {
+      "type": "text/csv",
+      "roles": [
+        "data"
+      ],
+      "title": "Tabular training data",
+      "description": "Tabular training data with latitude, longitude, and biomass observations"
+    }
+  },
+  "version": "v2.1",
+  "deprecated": false,
   "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
   "extent": {
     "spatial": {
