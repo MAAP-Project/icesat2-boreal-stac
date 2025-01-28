@@ -1,0 +1,87 @@
+{
+  "type": "Collection",
+  "id": "icesat2-boreal-v2.1-ht",
+  "stac_version": "1.1.0",
+  "description": "Gridded predictions of vegetation height (m) for the boreal region built from ICESat-2/ATL08 observations at 30m segment lengths, 30m HLS multispectral data, 30m Copernicus GLO30 topography, and 30m ESA Worldcover 2020 v1.0 land cover data.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "./collection.json",
+      "type": "application/json",
+      "title": "Icesat2 Boreal v2.1: Vegetation Height"
+    },
+    {
+      "rel": "predecessor-version",
+      "href": "https://stac.maap-project.org/collections/icesat2-boreal",
+      "title": "Previous version"
+    },
+    {
+      "rel": "item",
+      "href": "./boreal_ht_2020_202501131736787421_0000004/boreal_ht_2020_202501131736787421_0000004.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
+  ],
+  "item_assets": {
+    "cog": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data"
+      ],
+      "title": "Gridded predictions of vegetation height (m)",
+      "description": "Gridded predictions of vegetation height (m)"
+    },
+    "training_data_csv": {
+      "type": "text/csv",
+      "roles": [
+        "data"
+      ],
+      "title": "Tabular training data",
+      "description": "Tabular training data with latitude, longitude, and height observations"
+    }
+  },
+  "version": "v2.1",
+  "deprecated": false,
+  "renders": {
+    "ht_inferno": {
+      "title": "Vegetation height (m)",
+      "expression": "cog_b1",
+      "rescale": [
+        [
+          0,
+          30
+        ]
+      ],
+      "colormap_name": "inferno",
+      "minmax_zoom": [
+        6,
+        18
+      ]
+    }
+  },
+  "title": "Icesat2 Boreal v2.1: Vegetation Height",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -180,
+          51.6,
+          180,
+          78
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2020-01-01T00:00:00Z",
+          "2020-12-31T23:59:59Z"
+        ]
+      ]
+    }
+  },
+  "license": "CC-BY-NC-SA-4.0"
+}

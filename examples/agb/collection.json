@@ -1,0 +1,103 @@
+{
+  "type": "Collection",
+  "id": "icesat2-boreal-v2.1-agb",
+  "stac_version": "1.1.0",
+  "description": "Gridded predictions of aboveground biomass (Mg/ha) for the boreal region built from ICESat-2/ATL08 observations at 30m segment lengths, 30m HLS multispectral data, 30m Copernicus GLO30 topography, and 30m ESA Worldcover 2020 v1.0 land cover data.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "./collection.json",
+      "type": "application/json",
+      "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density"
+    },
+    {
+      "rel": "predecessor-version",
+      "href": "https://stac.maap-project.org/collections/icesat2-boreal",
+      "title": "Previous version"
+    },
+    {
+      "rel": "item",
+      "href": "./boreal_agb_2020_202411251732556086_0000004/boreal_agb_2020_202411251732556086_0000004.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
+  ],
+  "item_assets": {
+    "cog": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": [
+        "data"
+      ],
+      "title": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "description": "Gridded predictions of aboveground biomass (Mg/ha)"
+    },
+    "training_data_csv": {
+      "type": "text/csv",
+      "roles": [
+        "data"
+      ],
+      "title": "Tabular training data",
+      "description": "Tabular training data with latitude, longitude, and biomass observations"
+    }
+  },
+  "version": "v2.1",
+  "deprecated": false,
+  "renders": {
+    "agb_viridis": {
+      "title": "Aboveground biomass (Mg/ha)",
+      "expression": "cog_b1",
+      "rescale": [
+        [
+          0,
+          125
+        ]
+      ],
+      "colormap_name": "viridis",
+      "minmax_zoom": [
+        6,
+        18
+      ]
+    },
+    "agb_gist_earth_r": {
+      "title": "Aboveground biomass (Mg/ha)",
+      "expression": "cog_b1",
+      "rescale": [
+        [
+          0,
+          400
+        ]
+      ],
+      "colormap_name": "gist_earth_r",
+      "color_formula": "gamma r 1.05",
+      "minmax_zoom": [
+        6,
+        18
+      ]
+    }
+  },
+  "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -180,
+          51.6,
+          180,
+          78
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2020-01-01T00:00:00Z",
+          "2020-12-31T23:59:59Z"
+        ]
+      ]
+    }
+  },
+  "license": "CC-BY-NC-SA-4.0"
+}
