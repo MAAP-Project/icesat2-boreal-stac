@@ -5,9 +5,9 @@
 - Name: icesat2-boreal-stac
 - Package: `icesat2_boreal_stac`
 - Owner: @hrodmn
-- [Dataset homepage](http://example.com)
 - STAC extensions used:
   - [proj](https://github.com/stac-extensions/projection/)
+  - [render](https://github.com/stac-extensions/render/)
 - [Browse an example in human-readable form](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/MAAP-project/icesat2-boreal-stac/main/examples/collection.json)
 
 A short description of the package and its usage.
@@ -29,8 +29,6 @@ A short description of the package and its usage.
 ```shell
 pip install git+https://github.com/MAAP-project/icesat2-boreal-stac.git@main
 ```
-
-Use `stac ephemeral --help` to see all subcommands and options.
 
 ## Usage
 
