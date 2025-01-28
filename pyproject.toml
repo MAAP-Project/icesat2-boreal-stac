@@ -22,9 +22,6 @@ dynamic = ["version"]
 dependencies = [
     "pystac",
     "rio-stac",
-    "fire",
-    "s3fs",
-    "pydantic-settings",
     "pystac[validation]",
     "boto3",
 ]
