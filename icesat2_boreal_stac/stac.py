@@ -8,69 +8,33 @@ from typing import Dict, Optional, Set
 import boto3
 import rasterio
 import rio_stac
+from botocore.exceptions import ClientError
 from dateutil.relativedelta import relativedelta
 from pystac import (
     Collection,
     Extent,
     Item,
+    ItemAssetDefinition,
     Link,
     MediaType,
     SpatialExtent,
     TemporalExtent,
 )
-from pystac.extensions.item_assets import AssetDefinition
 from pystac.extensions.render import Render, RenderExtension
 from pystac.extensions.version import VersionRelType
 from rio_stac.stac import get_raster_info
 
-VERSION = "v2.1"
-COLLECTION_ID_FORMAT = "icesat2-boreal-{version}-{variable}"
-
-RDS_MEDIA_TYPE = "application/x-rds"
-CSV_MEDIA_TYPE = "text/csv"
-
-RASTER_SIZE = 3000
-BBOX = [-180, 51.6, 180, 78]
-TEMPORAL_INTERVALS = [
-    [
-        datetime(2020, 1, 1, tzinfo=timezone.utc),
-        datetime(2021, 1, 1, tzinfo=timezone.utc) - timedelta(seconds=1),
-    ]
-]
-
-
-class Variable(str, Enum):
-    """Enumeration of the different variables"""
-
-    AGB = "agb"
-    HT = "ht"
-
-
-class AssetType(str, Enum):
-    """Enumeration of all possible asset types that should be present"""
-
-    COG = "cog"
-    # MODEL = "model"
-    TRAINING_DATA_CSV = "training_data_csv"
-
-    def get_file_pattern(self) -> str:
-        """Returns the file pattern for this asset type"""
-        patterns = {
-            self.COG: ".tif",
-            # self.MODEL: "_model.Rds",
-            self.TRAINING_DATA_CSV: "_train_data.csv",
-        }
-        return patterns[self]
-
-    def matches_file(self, filename: str) -> bool:
-        """Check if the given filename matches this asset type's pattern"""
-        return filename.endswith(self.get_file_pattern())
-
-    @classmethod
-    def required_assets(cls) -> Set[str]:
-        """Returns set of all required asset types"""
-        return {member.value for member in cls}
-
+from icesat2_boreal_stac.constants import (
+    BBOX,
+    COLLECTION_ID_FORMAT,
+    CSV_MEDIA_TYPE,
+    RASTER_SIZE,
+    TEMPORAL_INTERVALS,
+    VERSION,
+    AssetType,
+    Variable,
+)
+from icesat2_boreal_stac.s3 import cog_key_to_asset_keys
 
 # specific text fields for each variable/asset
 COLLECTION_DESCRIPTIONS = {
@@ -170,7 +134,7 @@ ITEM_ASSET_PROPERTIES = {
 
 ITEM_ASSETS = {
     variable: {
-        asset_type: AssetDefinition(
+        asset_type: ItemAssetDefinition(
             {
                 **properties,
                 **TEXT[variable].get(asset_type, {}),
@@ -180,56 +144,6 @@ ITEM_ASSETS = {
     }
     for variable in Variable
 }
-
-
-def cog_key_to_asset_keys(
-    cog_key: str, copy_to: Optional[str] = None
-) -> Dict[AssetType, str]:
-    """Given an S3 key to a cog asset, return a dictionary of all associated assets and
-    their storage keys"""
-    if not cog_key.startswith("s3://"):
-        raise ValueError(f"{cog_key} is not a valid s3 key")
-
-    s3_client = boto3.client("s3")
-    _, _, bucket, input_key = cog_key.split("/", 3)
-
-    s3_client.head_object(Bucket=bucket, Key=input_key)
-
-    s3_dir = os.path.dirname(input_key)
-
-    asset_keys = {}
-
-    dir_contents = s3_client.list_objects_v2(Bucket=bucket, Prefix=s3_dir + "/")
-
-    for obj in dir_contents.get("Contents", []):
-        obj_key = obj["Key"]
-        filename = os.path.basename(obj_key)
-        full_s3_path = f"s3://{bucket}/{obj_key}"
-
-        # check each asset type for a match
-        for asset_type in AssetType:
-            if asset_type.matches_file(filename):
-                if copy_to:
-                    _, _, copy_bucket, copy_dir = copy_to.split("/", 3)
-                    copy_key = f"{copy_dir.strip('/')}/{filename}"
-
-                    s3_client.copy_object(
-                        CopySource={"Bucket": bucket, "Key": obj_key},
-                        Bucket=copy_bucket,
-                        Key=copy_key,
-                    )
-
-                    # Update the asset path to point to the new location
-                    full_s3_path = f"s3://{copy_bucket}/{copy_key}"
-
-                asset_keys[asset_type] = full_s3_path
-
-    # verify all required assets were found
-    missing_assets = AssetType.required_assets() - set(asset_keys.keys())
-    if missing_assets:
-        raise ValueError(f"Missing required assets: {missing_assets}")
-
-    return asset_keys
 
 
 def create_collection(variable: Variable) -> Collection:
