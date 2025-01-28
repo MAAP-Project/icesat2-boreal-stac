@@ -3,7 +3,7 @@
 import os
 from datetime import datetime, timedelta, timezone
 from enum import Enum
-from typing import Dict, Set
+from typing import Dict, Optional, Set
 
 import boto3
 import rasterio
@@ -172,7 +172,9 @@ ITEM_ASSETS = {
 }
 
 
-def cog_key_to_asset_keys(cog_key: str) -> Dict[AssetType, str]:
+def cog_key_to_asset_keys(
+    cog_key: str, copy_to: Optional[str] = None
+) -> Dict[AssetType, str]:
     """Given an S3 key to a cog asset, return a dictionary of all associated assets and
     their storage keys"""
     if not cog_key.startswith("s3://"):
@@ -197,6 +199,19 @@ def cog_key_to_asset_keys(cog_key: str) -> Dict[AssetType, str]:
         # check each asset type for a match
         for asset_type in AssetType:
             if asset_type.matches_file(filename):
+                if copy_to:
+                    _, _, copy_bucket, copy_dir = copy_to.split("/", 3)
+                    copy_key = f"{copy_dir.strip('/')}/{filename}"
+
+                    s3_client.copy_object(
+                        CopySource={"Bucket": bucket, "Key": obj_key},
+                        Bucket=copy_bucket,
+                        Key=copy_key,
+                    )
+
+                    # Update the asset path to point to the new location
+                    full_s3_path = f"s3://{copy_bucket}/{copy_key}"
+
                 asset_keys[asset_type] = full_s3_path
 
     # verify all required assets were found
@@ -248,9 +263,9 @@ def create_collection(variable: Variable) -> Collection:
     return collection
 
 
-def create_item(cog_key: str) -> Item:
+def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
     """Create a STAC item given the S3 key for a COG"""
-    asset_keys = cog_key_to_asset_keys(cog_key)
+    asset_keys = cog_key_to_asset_keys(cog_key, copy_to)
 
     item_id = os.path.splitext(os.path.basename(cog_key))[0]
 

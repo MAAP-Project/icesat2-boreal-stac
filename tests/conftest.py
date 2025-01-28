@@ -1,6 +1,7 @@
 """Test configuration"""
 
 import os
+from typing import Optional
 
 import boto3
 import pytest
@@ -54,10 +55,20 @@ def test_bucket(aws_credentials, test_cog_key, test_bad_cog_key):
 
 
 @pytest.fixture
+def test_copy_bucket(aws_credentials):
+    """Fixture that creates a mock S3 bucket with test data"""
+    with mock_aws():
+        s3 = boto3.client("s3")
+        bucket_name = "test-copy-bucket"
+        s3.create_bucket(Bucket=bucket_name)
+        yield bucket_name
+
+
+@pytest.fixture
 def mock_cog_key_to_asset_keys(monkeypatch):
     """Skip S3 operations and just return COG key"""
 
-    def mock_cog_key_to_asset_keys(cog_key: str):
+    def mock_cog_key_to_asset_keys(cog_key: str, copy_to: Optional[str] = None):
         return {
             AssetType.COG: cog_key,
             AssetType.TRAINING_DATA_CSV: cog_key.replace(".tif", "_train_data.csv"),
