@@ -81,4 +81,4 @@ def test_create_item(mock_cog_key_to_asset_keys) -> None:
 def test_create_collection(variable: Variable) -> None:
     """Test create_collection"""
     collection = create_collection(variable)
-    assert collection.ext.render
+    assert collection.extra_fields["renders"]

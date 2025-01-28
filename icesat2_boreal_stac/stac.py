@@ -18,8 +18,7 @@ from pystac import (
     SpatialExtent,
     TemporalExtent,
 )
-from pystac.extensions.item_assets import AssetDefinition
-from pystac.extensions.render import Render, RenderExtension
+from pystac.extensions.item_assets import AssetDefinition, ItemAssetsExtension
 from pystac.extensions.version import VersionRelType
 from rio_stac.stac import get_raster_info
 
@@ -28,6 +27,7 @@ COLLECTION_ID_FORMAT = "icesat2-boreal-{version}-{variable}"
 
 RDS_MEDIA_TYPE = "application/x-rds"
 CSV_MEDIA_TYPE = "text/csv"
+RENDER_EXT_URI = "https://stac-extensions.github.io/render/v2.0.0/schema.json"
 
 RASTER_SIZE = 3000
 BBOX = [-180, 51.6, 180, 78]
@@ -115,28 +115,24 @@ TEXT = {
 
 RENDERS = {
     Variable.AGB: {
-        "agb": Render(
-            {
-                "title": "Aboveground biomass (Mg/ha)",
-                "assets": [AssetType.COG],
-                "expression": "cog_b1",
-                "rescale": [[0, 125]],
-                "colormap_name": "viridis",
-                "minmax_zoom": [6, 18],
-            }
-        )
+        "agb": {
+            "title": "Aboveground biomass (Mg/ha)",
+            "assets": [AssetType.COG],
+            "expression": "cog_b1",
+            "rescale": [[0, 125]],
+            "colormap_name": "viridis",
+            "minmax_zoom": [6, 18],
+        }
     },
     Variable.HT: {
-        "ht": Render(
-            {
-                "title": "Vegetation height (m)",
-                "assets": [AssetType.COG],
-                "expression": "cog_b1",
-                "rescale": [[0, 30]],
-                "colormap_name": "inferno",
-                "minmax_zoom": [6, 18],
-            }
-        )
+        "ht": {
+            "title": "Vegetation height (m)",
+            "assets": [AssetType.COG],
+            "expression": "cog_b1",
+            "rescale": [[0, 30]],
+            "colormap_name": "inferno",
+            "minmax_zoom": [6, 18],
+        }
     },
 }
 
@@ -239,9 +235,12 @@ def create_collection(variable: Variable) -> Collection:
             temporal=TemporalExtent(intervals=TEMPORAL_INTERVALS),
         ),
         license="CC-BY-NC-SA-4.0",
+        extra_fields={"renders": RENDERS[variable]},
+        stac_extensions=[RENDER_EXT_URI],
     )
 
-    collection.item_assets = {
+    item_assets_ext = ItemAssetsExtension.ext(collection, add_if_missing=True)
+    item_assets_ext.item_assets = {
         item_asset.value: asset for item_asset, asset in ITEM_ASSETS[variable].items()
     }
 
@@ -257,10 +256,6 @@ def create_collection(variable: Variable) -> Collection:
             title="Previous version",
         )
     )
-
-    # add render extension
-    collection.ext.add("render")
-    RenderExtension.ext(collection).apply(RENDERS[variable])
 
     return collection
 
