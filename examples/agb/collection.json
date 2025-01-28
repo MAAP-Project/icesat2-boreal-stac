@@ -22,30 +22,9 @@
     }
   ],
   "stac_extensions": [
-    "https://stac-extensions.github.io/render/v2.0.0/schema.json",
-    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/version/v1.2.0/schema.json"
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
   ],
-  "renders": {
-    "agb": {
-      "title": "Aboveground biomass (Mg/ha)",
-      "assets": [
-        "cog"
-      ],
-      "expression": "cog_b1",
-      "rescale": [
-        [
-          0,
-          125
-        ]
-      ],
-      "colormap_name": "viridis",
-      "minmax_zoom": [
-        6,
-        18
-      ]
-    }
-  },
   "item_assets": {
     "cog": {
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
@@ -66,6 +45,39 @@
   },
   "version": "v2.1",
   "deprecated": false,
+  "renders": {
+    "agb_viridis": {
+      "title": "Aboveground biomass (Mg/ha)",
+      "expression": "cog_b1",
+      "rescale": [
+        [
+          0,
+          125
+        ]
+      ],
+      "colormap_name": "viridis",
+      "minmax_zoom": [
+        6,
+        18
+      ]
+    },
+    "agb_gist_earth_r": {
+      "title": "Aboveground biomass (Mg/ha)",
+      "expression": "cog_b1",
+      "rescale": [
+        [
+          0,
+          400
+        ]
+      ],
+      "colormap_name": "gist_earth_r",
+      "color_formula": "gamma r 1.05",
+      "minmax_zoom": [
+        6,
+        18
+      ]
+    }
+  },
   "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
   "extent": {
     "spatial": {

@@ -417,7 +417,6 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "boto3" },
-    { name = "pystac" },
     { name = "pystac", extras = ["validation"] },
     { name = "rio-stac" },
 ]

@@ -115,22 +115,30 @@ TEXT = {
 
 RENDERS = {
     Variable.AGB: {
-        "agb": Render(
+        "agb_viridis": Render(
             {
                 "title": "Aboveground biomass (Mg/ha)",
-                "assets": [AssetType.COG],
                 "expression": "cog_b1",
                 "rescale": [[0, 125]],
                 "colormap_name": "viridis",
                 "minmax_zoom": [6, 18],
             }
-        )
+        ),
+        "agb_gist_earth_r": Render(
+            {
+                "title": "Aboveground biomass (Mg/ha)",
+                "expression": "cog_b1",
+                "rescale": [[0, 400]],
+                "colormap_name": "gist_earth_r",
+                "color_formula": "gamma r 1.05",
+                "minmax_zoom": [6, 18],
+            }
+        ),
     },
     Variable.HT: {
-        "ht": Render(
+        "ht_inferno": Render(
             {
                 "title": "Vegetation height (m)",
-                "assets": [AssetType.COG],
                 "expression": "cog_b1",
                 "rescale": [[0, 30]],
                 "colormap_name": "inferno",

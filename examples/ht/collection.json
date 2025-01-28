@@ -22,30 +22,9 @@
     }
   ],
   "stac_extensions": [
-    "https://stac-extensions.github.io/render/v2.0.0/schema.json",
-    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/version/v1.2.0/schema.json"
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json"
   ],
-  "renders": {
-    "ht": {
-      "title": "Vegetation height (m)",
-      "assets": [
-        "cog"
-      ],
-      "expression": "cog_b1",
-      "rescale": [
-        [
-          0,
-          30
-        ]
-      ],
-      "colormap_name": "inferno",
-      "minmax_zoom": [
-        6,
-        18
-      ]
-    }
-  },
   "item_assets": {
     "cog": {
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
@@ -66,6 +45,23 @@
   },
   "version": "v2.1",
   "deprecated": false,
+  "renders": {
+    "ht_inferno": {
+      "title": "Vegetation height (m)",
+      "expression": "cog_b1",
+      "rescale": [
+        [
+          0,
+          30
+        ]
+      ],
+      "colormap_name": "inferno",
+      "minmax_zoom": [
+        6,
+        18
+      ]
+    }
+  },
   "title": "Icesat2 Boreal v2.1: Vegetation Height",
   "extent": {
     "spatial": {
