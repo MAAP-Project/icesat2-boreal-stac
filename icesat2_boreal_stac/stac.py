@@ -13,12 +13,12 @@ from pystac import (
     Collection,
     Extent,
     Item,
-    ItemAssetDefinition,
     Link,
     MediaType,
     SpatialExtent,
     TemporalExtent,
 )
+from pystac.extensions.item_assets import AssetDefinition
 from pystac.extensions.render import Render, RenderExtension
 from pystac.extensions.version import VersionRelType
 from rio_stac.stac import get_raster_info
@@ -162,7 +162,7 @@ ITEM_ASSET_PROPERTIES = {
 
 ITEM_ASSETS = {
     variable: {
-        asset_type: ItemAssetDefinition(
+        asset_type: AssetDefinition(
             {
                 **properties,
                 **TEXT[variable].get(asset_type, {}),

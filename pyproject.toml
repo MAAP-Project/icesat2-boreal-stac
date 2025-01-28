@@ -20,7 +20,7 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-    "pystac>=1.12.1",
+    "pystac",
     "rio-stac",
     "pystac[validation]",
     "boto3",
