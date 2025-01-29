@@ -8,7 +8,7 @@
 - STAC extensions used:
   - [proj](https://github.com/stac-extensions/projection/)
   - [render](https://github.com/stac-extensions/render/)
-- [Browse an example in human-readable form](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/MAAP-project/icesat2-boreal-stac/main/examples/collection.json)
+- [Browse an example in human-readable form](https://radiantearth.github.io/stac-browser/#/external/raw.githubusercontent.com/MAAP-project/icesat2-boreal-stac/main/examples/agb/collection.json)
 
 A short description of the package and its usage.
 
