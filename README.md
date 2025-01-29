@@ -31,20 +31,29 @@ pip install git+https://github.com/MAAP-project/icesat2-boreal-stac.git@main
 ```
 
 ## Usage
-
-> [!NOTE]
-> You need to be authenticated with MAAP SMCE AWS credentials to access the files in these buckets:
+>
+> [!WARNING]
+> By default, this package will create STAC v1.1.0 collections and items!
+>
+> Use `pystac.set_stac_version` or the `PYSTAC_STAC_VERSION_OVERRIDE` environment variable to set it to version 1.0.0 if you need that for your catalog.
 
 To create collections:
 
 ```python
+from pystac import set_stac_version
 from icesat2_boreal_stac.stac import create_collection, Variable
+
+# optional: set STAC version to 1.0.0
+# set_stac_version("1.0.0")
 
 agb_collection = create_collection(Variable.AGB)
 ht_collection = create_collection(Variable.HT)
 ```
 
 To create items, specify the key to the COG asset for this item. The package assumes that the other asset(s) (e.g. train_data.csv) are located alongside the COG asset in a folder in S3.
+
+> [!NOTE]
+> You need to be authenticated with MAAP SMCE AWS credentials to access the files in these buckets:
 
 ```python
 from icesat2_boreal_stac.stac import create_item

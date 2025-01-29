@@ -2,13 +2,11 @@
 
 import os
 from datetime import datetime, timedelta, timezone
-from enum import Enum
-from typing import Dict, Optional, Set
+from typing import Optional
 
-import boto3
 import rasterio
 import rio_stac
-from botocore.exceptions import ClientError
+import semver
 from dateutil.relativedelta import relativedelta
 from pystac import (
     Collection,
@@ -19,6 +17,7 @@ from pystac import (
     MediaType,
     SpatialExtent,
     TemporalExtent,
+    get_stac_version,
 )
 from pystac.extensions.render import Render, RenderExtension
 from pystac.extensions.version import VersionRelType
@@ -180,6 +179,11 @@ def create_collection(variable: Variable) -> Collection:
         )
     )
 
+    # if using STAC v1.0.0, add raster and item-assets extensions
+    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
+        collection.ext.add("raster")
+        collection.ext.add("item_assets")
+
     # add render extension
     collection.ext.add("render")
     RenderExtension.ext(collection).apply(RENDERS[variable])
@@ -237,13 +241,18 @@ def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
     )
 
     # retrieve the raster info separately
+    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
+        item.stac_extensions.append(
+            "https://stac-extensions.github.io/raster/v1.1.0/schema.json"
+        )
+        band_property = "raster:bands"
+    else:
+        band_property = "bands"
+
     with rasterio.open(cog_key) as src:
-        raster_info = {"raster:bands": get_raster_info(src, max_size=RASTER_SIZE)}
+        raster_info = {band_property: get_raster_info(src, max_size=RASTER_SIZE)}
 
     item.assets[AssetType.COG].extra_fields.update(**raster_info)
-    item.stac_extensions.append(
-        "https://stac-extensions.github.io/raster/v1.1.0/schema.json"
-    )
 
     item.validate()
 

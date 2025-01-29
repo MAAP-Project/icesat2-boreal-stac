@@ -78,3 +78,19 @@ def mock_cog_key_to_asset_keys(monkeypatch):
     monkeypatch.setattr(
         "icesat2_boreal_stac.stac.cog_key_to_asset_keys", mock_cog_key_to_asset_keys
     )
+
+
+@pytest.fixture(scope="function")
+def stac_v1_0_0():
+    """Set a custom environment variable for testing."""
+    var = "PYSTAC_STAC_VERSION_OVERRIDE"
+    original_value = os.getenv(var)
+
+    os.environ[var] = "1.0.0"
+
+    yield
+
+    if original_value is not None:
+        os.environ[var] = original_value
+    else:
+        del os.environ[var]

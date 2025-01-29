@@ -20,8 +20,9 @@ classifiers = [
 dynamic = ["version"]
 dependencies = [
     "rio-stac",
-    "pystac[validation]",
+    "pystac[validation]>=1.12.0",
     "boto3",
+    "semver>=3.0.4",
 ]
 
 [dependency-groups]
@@ -77,6 +78,7 @@ lint.select = [
     "W",  # pycodestyle warnings
     "C",  # flake8-comprehensions
     "B",  # flake8-bugbear
+    "F401", # unused imports
 ]
 
 line-length = 88

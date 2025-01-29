@@ -2,8 +2,7 @@
   "type": "Feature",
   "stac_version": "1.1.0",
   "stac_extensions": [
-    "https://stac-extensions.github.io/projection/v1.1.0/schema.json",
-    "https://stac-extensions.github.io/raster/v1.1.0/schema.json"
+    "https://stac-extensions.github.io/projection/v1.1.0/schema.json"
   ],
   "id": "boreal_ht_2020_202501131736787421_0000004",
   "geometry": {
@@ -121,7 +120,7 @@
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
       "title": "Gridded predictions of vegetation height (m)",
       "description": "Gridded predictions of vegetation height (m)",
-      "raster:bands": [
+      "bands": [
         {
           "data_type": "float32",
           "scale": 1.0,
