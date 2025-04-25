@@ -2,7 +2,6 @@
 name = "icesat2-boreal-stac"
 description = "Create STAC Items for icesat2-boreal data products"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
 authors = [
     {name = "Henry Rodman", email = "henry@developmentseed.com"},
     {name = "Emile Tenezakis", email = "emile@developmentseed.com"},
