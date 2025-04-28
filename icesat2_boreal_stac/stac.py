@@ -24,6 +24,7 @@ from rio_stac.stac import get_raster_info
 
 from icesat2_boreal_stac.constants import (
     BBOX,
+    COLLECTION_ASSETS,
     COLLECTION_DESCRIPTION,
     COLLECTION_ID_FORMAT,
     COLLECTION_TITLES,
@@ -31,6 +32,7 @@ from icesat2_boreal_stac.constants import (
     PROVIDERS,
     RASTER_SIZE,
     RENDERS,
+    REPOSITORY_LINK,
     SUMMARIES,
     TEMPORAL_INTERVALS,
     VERSION,
@@ -64,7 +66,10 @@ def create_collection(variable: Variable) -> Collection:
         license="CC-BY-NC-SA-4.0",
         providers=PROVIDERS,
         summaries=SUMMARIES,
+        assets=COLLECTION_ASSETS[variable],
     )
+
+    collection.add_link(REPOSITORY_LINK)
 
     collection.item_assets = {
         item_asset.value: asset for item_asset, asset in ITEM_ASSETS[variable].items()

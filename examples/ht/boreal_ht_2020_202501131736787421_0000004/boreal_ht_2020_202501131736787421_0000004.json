@@ -120,6 +120,7 @@
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
       "title": "Gridded predictions of vegetation height (m)",
       "description": "Gridded predictions of vegetation height (m)",
+      "gsd": 30,
       "bands": [
         {
           "data_type": "float32",

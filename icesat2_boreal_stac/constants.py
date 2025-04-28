@@ -2,9 +2,17 @@
 
 from datetime import datetime, timedelta, timezone
 from enum import Enum
-from typing import Set
+from typing import Any, Dict, Set
 
-from pystac import ItemAssetDefinition, MediaType, Provider, ProviderRole, Summaries
+from pystac import (
+    Asset,
+    ItemAssetDefinition,
+    Link,
+    MediaType,
+    Provider,
+    ProviderRole,
+    Summaries,
+)
 from pystac.extensions.render import Render
 
 
@@ -48,6 +56,7 @@ RDS_MEDIA_TYPE = "application/x-rds"
 CSV_MEDIA_TYPE = "text/csv"
 
 RASTER_SIZE = 3000
+RESOLUTION = 30
 BBOX = [-180, 51.6, 180, 78]
 TEMPORAL_INTERVALS = [
     [
@@ -125,6 +134,7 @@ included as a GeoPackage file and a Shapefile. This product was generated on the
 NASA-ESA Multi-Mission Algorithm and Analysis Platform (MAAP, https://scimaap.net), an
 open science platform. All code and input files are publicly available:
 [https://github.com/lauraduncanson/icesat2_boreal](https://repo.ops.maap-project.org/icesat2_boreal/icesat2_boreal)
+
 This dataset includes 15610 files: 3902 cloud-optimized GeoTIFFs, 3902 tables in
 comma-separated values (CSV) format, and 1 geopackage tile index for each product (AGB
 and height).
@@ -154,14 +164,18 @@ SUMMARIES = Summaries(
             "ICESat-2",
         ],
         "instruments": [
-            "atlas",
-            "msi",
-            "oli",
-            "oli-2",
+            "Advanced Topographic Laser Altimeter System",
+            "Operational Land Imager",
+            "Operational Land Imager 2",
+            "Sentinel-2 Multispectral Imager",
         ],
         "mission": [
             "ABoVE",
         ],
+        "gsd": {
+            "minimum": 30,
+            "maximum": 30,
+        },
     }
 )
 
@@ -171,6 +185,37 @@ COLLECTION_TITLES = {
     Variable.AGB: "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
     Variable.HT: "Icesat2 Boreal v2.1: Vegetation Height",
 }
+
+COLLECTION_ASSETS = {
+    Variable.AGB: {
+        "tiles": Asset(
+            href="s3://maap-ops-workspace/shared/montesano/databank/daac/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
+            title="Processing tiles",
+            description="90 km tile geometries for processing AGB predictions",
+            media_type=MediaType.GEOPACKAGE,
+            roles=["metadata"],
+        )
+    },
+    Variable.HT: {
+        "tiles": Asset(
+            href="s3://maap-ops-workspace/shared/montesano/databank/daac/boreal_tiles_v004_HT_H30_2020_ORNLDAAC.gpkg",
+            title="Processing tiles",
+            description="90 km tile geometries for processing vegetation height "
+            "predictions",
+            media_type=MediaType.GEOPACKAGE,
+            roles=["metadata"],
+        )
+    },
+}
+
+
+REPOSITORY_LINK = Link(
+    target="https://github.com/lauraduncanson/icesat2_boreal",
+    rel="about",
+    media_type=MediaType.HTML,
+    title="icesat2_boreal GitHub repository",
+)
+
 
 TEXT = {
     Variable.AGB: {
@@ -231,34 +276,28 @@ RENDERS = {
 }
 
 
-ITEM_ASSET_PROPERTIES = {
+ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
     AssetType.COG: {
         "type": MediaType.COG,
         "roles": ["data"],
+        "gsd": RESOLUTION,
     },
     AssetType.TRAINING_DATA_CSV: {
         "type": CSV_MEDIA_TYPE,
         "roles": ["data"],
         "title": "Tabular training data",
     },
-    # AssetType.MODEL: {
-    #     "type": RDS_MEDIA_TYPE,
-    #     "roles": ["model"],
-    #     "title": "Prediction model",
-    #     "description": "Random forest model used to generate predictions for this "
-    #     "item, stored as an .Rds",
-    # },
 }
 
 ITEM_ASSETS = {
     variable: {
         asset_type: ItemAssetDefinition(
             {
-                **properties,
-                **TEXT[variable].get(asset_type, {}),
+                **ITEM_ASSET_PROPERTIES[asset_type],
+                **TEXT[variable][asset_type],
             }
         )
-        for asset_type, properties in ITEM_ASSET_PROPERTIES.items()
+        for asset_type in AssetType
     }
     for variable in Variable
 }
