@@ -70,75 +70,84 @@ Biomass Density (AGBD) and vegetation height for high northern latitude forests 
 30-m spatial resolution. It is designed both for circumpolar boreal-wide mapping and
 filling the northern spatial data gap from NASA's Global Ecosystem Dynamics
 Investigation (GEDI) mission. Mapping woody AGBD and height is essential for
-understanding, monitoring, and managing forest carbon stocks and fluxes. The AGBD and
-height predictions cover the extent of high latitude boreal forests and shrublands, and
-extend southward outside the boreal domain to 51.6°N. These maps represent conditions
-in 2020. ICESat-2 ATL08 represented the training data for these mapped products, with
-ATL08’s maximum height (h_canopy) used to train the height product, and estimates of
-30-m AGBD from ATL08 used to train the AGBD product. AGBD and vegetation models were
-developed using local moving window models, with models produced for a suite of 90 km
-tiles.
+understanding, monitoring, and managing forest carbon stocks and fluxes. The
+AGBD and height predictions cover the extent of high latitude boreal forests and
+shrublands, and extend southward outside the boreal domain to 51.6°N. These maps
+represent conditions in 2020.
 
-Prediction of AGBD involved two modeling steps: (1) Regression with Ordinary Least
-Squares (OLS) to relate field plot measurements of AGBD to NASA's ICESat-2 30-m ATL08
-lidar samples, and (2) Machine learning modeling with random forest to extend estimates
-beyond the field plots by relating ICESat-2 AGBD predictions to wall-to-wall gridded
-covariate stacks from Harmonized Landsat Sentinel-2 (HLS) and the Copernicus GLO30 DEM.
-Per-pixel uncertainties are estimated from bootstrapping both models.
+ICESat-2 ATL08 represented the training data for these mapped products, with
+ATL08’s maximum height (h_canopy) used to train the height product, and
+estimates of 30-m AGBD from ATL08 used to train the AGBD product. AGBD and
+vegetation models were developed using local moving window models, with models
+produced for a suite of 90 km tiles.
 
-Prediction of vegetation height used the second of the steps for AGBD, as no model was
-required to predict height from ATL08, as height is directly with ICESat-2. Uncertainty
-was therefore estimated from bootstrapping the random forest model, with no propagation
-of any uncertainties from the ICESat-2 height measurements.
+Prediction of AGBD involved two modeling steps: (1) regression with ordinary
+least squares (OLS) to relate field plot measurements of AGBD to NASA's ICESat-2
+30-m ATL08 lidar samples, and (2) machine learning modeling with random forest
+to extend estimates beyond the field plots by relating ICESat-2 AGBD predictions
+to wall-to-wall gridded covariate stacks from Harmonized Landsat/Sentinel-2
+(HLS) and the Copernicus GLO30 DEM. Per-pixel uncertainties are estimated from
+bootstrapping both models.
 
-Uncertainties were estimated using bootstrapping of training data to produce a suite of
-models and maps, which were then summarized to produce pixel-level standard error
-estimates. Models were re-fit for each 90 km tile until the variance of the 90 km AGBD
-total stabilized (less than 5% change in the variance of tile total AGBD). The
-pixel-level SD is calculated as the SD of the set of pixel predictions from these
-iterations.
+Prediction of vegetation height used the second of the two steps for AGBD, since
+what would otherwise be the dependent variable (height) is a direct measurement
+from ICESat-2 ATL08. Uncertainty was therefore estimated from bootstrapping the
+random forest model, with no propagation of any uncertainties from the ICESat-2
+height measurements.
 
-This dataset features predictions for landcovers that are associated with the full woody
-structure gradient according to the European Space Agency’s Worldcover v1.0 2020
-dataset. This primarily includes forests, shrubs, and grass extents in which woody
-vegetation is present. Importantly, predictions were also made for the 'moss/lichen'
-land cover. The decision to include these pixels considered the broad domain of this
-study, where areas from the far north down to southern portions featured this
-classification, but represented very different apparent land uses. In northern portions,
-this classification occurs frequently across tundra extents (eg, the Brooks Range),
-whereas in the south it appears at sites of recent forest clearing. Non-vegetated land
-covers (e.g. built up, water, rock, ice) were masked out of our predictions.
+Uncertainties were estimated using bootstrapping of training data to produce a
+suite of models and maps, which were then summarized to produce pixel-level
+standard error estimates. Models were re-fit for each 90 km tile until the
+variance of the 90 km AGBD total stabilized (less than 5% change in the variance
+of tile total AGBD). The pixel-level SD is calculated as the SD of the set of
+pixel predictions from these iterations.
 
-HLS composites and ICESat-2 data were from 2020 to produce a single-year 2020 map.
-ICESat-2 data were filtered to include only strong beams, growing seasons (June through
-September), solar elevations less than 5 degrees, snow free land (snow flag set to 1),
-and "msw_flag" equal to 0 (clear skies and no observed atmospheric scattering).
-ICESat-2's ATL08 product was resampled to a 30-m spatial resolution to better match
-both the field plots and mapped pixels, which involved reprocessing the nominal 100-m
-segments to 30-m segments. HLS data (both the L30 and S30 products) were used to create
-a harmonized (HLSH30) greenest pixel composite of growing season multispectral data,
-which was then used to compute a suite of vegetation indices: NDVI, NDWI, NBR, NBR2,
-TCW, TCG. These were then used, in combination with a suite of topographic information
-(elevation, slope, topographic solar radiation index, topographic position index, and a
-binary slope mask indicating flat pixels) from the Copernicus DEM product, to predict
-30-m AGBD per 90-km tile. Estimates of mean AGBD and mean vegetation height with
-standard deviation are provided in cloud-optimized GeoTIFF (CoG) format.
+This dataset features predictions for landcovers that are associated with the
+full woody structure gradient according to the European Space Agency’s
+Worldcover v1.0 2020 dataset. This primarily includes forests, shrubs, and grass
+extents in which woody vegetation is present. Importantly, predictions were also
+made for the ‘moss/lichen’ land cover. The decision to include these pixels
+considered the broad domain of this study, where areas from the far north down
+to southern portions featured this classification, but represented very
+different apparent land uses. In northern portions, this classification occurs
+frequently across tundra extents (eg, the Brooks Range), whereas in the south it
+appears at sites of recent forest clearing. Non-vegetated land covers (e.g.
+built up, water, rock, ice) were masked out of our predictions.
 
-The product consists of a set of raster grids and tabular (CSV) files referenced to a
-set of 90-km tiles that cover the circumpolar boreal domain and south to 51.6°N (Figure
-1). Each raster grid is a 2-band file where the first and second band represent the
-mean and standard deviation pixel values that results from the bootstrapped prediction.
-The CSV files feature the ICESat-2 ATL08 30 m segment centroids that were used as
-training data in the prediction of each raster. A polygon map of these data tiles is
-included as a GeoPackage file and a Shapefile. This product was generated on the
-NASA-ESA Multi-Mission Algorithm and Analysis Platform (MAAP, https://scimaap.net), an
-open science platform. All code and input files are publicly available:
-[https://github.com/lauraduncanson/icesat2_boreal](https://repo.ops.maap-project.org/icesat2_boreal/icesat2_boreal)
+HLS composites and ICESat-2 data were from 2020 to produce a single-year 2020
+map. ICESat-2 data were filtered to include only strong beams, growing seasons
+(June through September), solar elevations less than 5 degrees, snow free land
+(snow flag set to 1), and "msw_flag" equal to 0 (clear skies and no observed
+atmospheric scattering). ICESat-2's ATL08 product was resampled to a 30-m
+spatial resolution to better match both the field plots and mapped pixels, which
+involved reprocessing the nominal 100-m segments to 30-m segments. HLS data
+(both the L30 and S30 products) were used to create a harmonized (HLSH30)
+greenest pixel composite of growing season multispectral data, which was then
+used to compute a suite of vegetation indices: NDVI, NDWI, NBR, NBR2, TCW, TCG.
+These were then used, in combination with a suite of topographic information
+(elevation, slope, topographic solar radiation index, topographic position
+index, and a binary slope mask indicating flat pixels) from the Copernicus DEM
+product, to predict 30-m AGBD per 90-km tile. Estimates of mean AGBD and mean
+vegetation height with standard deviation are provided in cloud-optimized
+GeoTIFF (CoG) format. The product consists of a set of raster grids and tabular
+(CSV) files referenced to a set of 90-km tiles that cover the circumpolar boreal
+domain and south to 51.6°N (Figure 1). Each raster grid is a 2-band file where
+the first and second band represent the mean and standard deviation pixel values
+that result from the bootstrapped prediction. The CSV files feature the ICESat-2
+ATL08 30 m segment centroids that were used as training data in the prediction
+of each raster. A polygon map of these data tiles is included as a GeoPackage
+file and a Shapefile. This product was generated on the NASA-ESA Multi-Mission
+Algorithm and Analysis Platform (MAAP, https://scimaap.net), an open science
+platform. All code and input files are publicly available:
+[https://github.com/lauraduncanson/icesat2_boreal.git](https://repo.ops.maap-project.org/icesat2_boreal/icesat2_boreal.git).
 
 This dataset includes 15610 files: 3902 cloud-optimized GeoTIFFs, 3902 tables in
-comma-separated values (CSV) format, and 1 geopackage tile index for each product (AGB
-and height).
+comma-separated values (CSV) format, and 1 geopackage tile index for each
+product (AGB and height).
 """
+
+COLLECTION_CITATION = """Duncanson, Montesano, Neuenschwander, Zarringhalam, Minor,
+Thomas. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)"""
 
 PROVIDERS = [
     Provider(

@@ -25,6 +25,7 @@ from rio_stac.stac import get_raster_info
 from icesat2_boreal_stac.constants import (
     BBOX,
     COLLECTION_ASSETS,
+    COLLECTION_CITATION,
     COLLECTION_DESCRIPTION,
     COLLECTION_ID_FORMAT,
     COLLECTION_TITLES,
@@ -101,6 +102,12 @@ def create_collection(variable: Variable) -> Collection:
     # add render extension
     collection.ext.add("render")
     RenderExtension.ext(collection).apply(RENDERS[variable])
+
+    # add scientific extension
+    collection.ext.add("sci")
+    collection.ext.sci.apply(
+        citation=format_multiline_string(COLLECTION_CITATION),
+    )
 
     return collection
 
