@@ -143,8 +143,7 @@ platform. All code and input files are publicly available:
 
 This dataset includes 15610 files: 3902 cloud-optimized GeoTIFFs, 3902 tables in
 comma-separated values (CSV) format, and 1 geopackage tile index for each
-product (AGB and height).
-"""
+product (AGB and height)."""
 
 COLLECTION_CITATION = """Duncanson, Montesano, Neuenschwander, Zarringhalam, Minor,
 Thomas. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)"""
