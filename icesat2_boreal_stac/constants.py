@@ -141,9 +141,8 @@ Algorithm and Analysis Platform (MAAP, https://scimaap.net), an open science
 platform. All code and input files are publicly available:
 [https://github.com/lauraduncanson/icesat2_boreal.git](https://repo.ops.maap-project.org/icesat2_boreal/icesat2_boreal.git).
 
-This dataset includes 15610 files: 3902 cloud-optimized GeoTIFFs, 3902 tables in
-comma-separated values (CSV) format, and 1 geopackage tile index for each
-product (AGB and height)."""
+For each product (AGB and height) there are 3902 cloud-optimized GeoTIFFs, 3902 tables
+in comma-separated values (CSV) format, and 1 geopackage tile index."""
 
 COLLECTION_CITATION = """Duncanson, Montesano, Neuenschwander, Zarringhalam, Minor,
 Thomas. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)"""
