@@ -87,7 +87,7 @@
       ]
     }
   },
-  "sci:citation": "Duncanson, Montesano, Neuenschwander, Zarringhalam, Minor, Thomas. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)",
+  "sci:citation": "Duncanson, L., P.M. Montesano, A. Neuenschwander, A. Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A. Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)",
   "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
   "extent": {
     "spatial": {
@@ -146,7 +146,7 @@
   },
   "assets": {
     "tiles": {
-      "href": "s3://maap-ops-workspace/shared/montesano/databank/daac/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
+      "href": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
       "type": "application/geopackage+sqlite3",
       "title": "Processing tiles",
       "description": "90 km tile geometries for processing AGB predictions",

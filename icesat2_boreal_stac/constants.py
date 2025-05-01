@@ -34,7 +34,6 @@ class AssetType(str, Enum):
         """Returns the file pattern for this asset type"""
         patterns = {
             self.COG: ".tif",
-            # self.MODEL: "_model.Rds",
             self.TRAINING_DATA_CSV: "_train_data.csv",
         }
         return patterns[self]
@@ -52,10 +51,8 @@ class AssetType(str, Enum):
 VERSION = "v2.1"
 COLLECTION_ID_FORMAT = "icesat2-boreal-{version}-{variable}"
 
-RDS_MEDIA_TYPE = "application/x-rds"
 CSV_MEDIA_TYPE = "text/csv"
 
-RASTER_SIZE = 3000
 RESOLUTION = 30
 BBOX = [-180, 51.6, 180, 78]
 TEMPORAL_INTERVALS = [
@@ -144,8 +141,10 @@ platform. All code and input files are publicly available:
 For each product (AGB and height) there are 3902 cloud-optimized GeoTIFFs, 3902 tables
 in comma-separated values (CSV) format, and 1 geopackage tile index."""
 
-COLLECTION_CITATION = """Duncanson, Montesano, Neuenschwander, Zarringhalam, Minor,
-Thomas. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)"""
+COLLECTION_CITATION = """Duncanson, L., P.M. Montesano, A. Neuenschwander, A.
+Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A.
+Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground
+biomass mapping with ICESat-2. (in prep.)"""
 
 PROVIDERS = [
     Provider(
@@ -196,7 +195,7 @@ COLLECTION_TITLES = {
 COLLECTION_ASSETS = {
     Variable.AGB: {
         "tiles": Asset(
-            href="s3://maap-ops-workspace/shared/montesano/databank/daac/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
+            href="s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
             title="Processing tiles",
             description="90 km tile geometries for processing AGB predictions",
             media_type=MediaType.GEOPACKAGE,
@@ -205,7 +204,7 @@ COLLECTION_ASSETS = {
     },
     Variable.HT: {
         "tiles": Asset(
-            href="s3://maap-ops-workspace/shared/montesano/databank/daac/boreal_tiles_v004_HT_H30_2020_ORNLDAAC.gpkg",
+            href="s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/ht/boreal_tiles_v004_HT_H30_2020_ORNLDAAC.gpkg",
             title="Processing tiles",
             description="90 km tile geometries for processing vegetation height "
             "predictions",

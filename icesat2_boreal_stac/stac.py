@@ -31,7 +31,6 @@ from icesat2_boreal_stac.constants import (
     COLLECTION_TITLES,
     ITEM_ASSETS,
     PROVIDERS,
-    RASTER_SIZE,
     RENDERS,
     REPOSITORY_LINK,
     SUMMARIES,
@@ -171,7 +170,7 @@ def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
         band_property = "bands"
 
     with rasterio.open(cog_key) as src:
-        raster_info = {band_property: get_raster_info(src, max_size=RASTER_SIZE)}
+        raster_info = {band_property: get_raster_info(src, max_size=3000)}
 
     item.assets[AssetType.COG].extra_fields.update(**raster_info)
 
