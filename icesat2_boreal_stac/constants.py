@@ -62,6 +62,8 @@ TEMPORAL_INTERVALS = [
     ]
 ]
 
+LICENSE = "CC-BY"
+
 COLLECTION_DESCRIPTION = """This dataset provides predictions of woody Aboveground
 Biomass Density (AGBD) and vegetation height for high northern latitude forests at a
 30-m spatial resolution. It is designed both for circumpolar boreal-wide mapping and
