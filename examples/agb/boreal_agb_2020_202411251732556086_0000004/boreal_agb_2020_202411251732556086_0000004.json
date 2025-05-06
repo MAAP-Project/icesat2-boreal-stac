@@ -120,6 +120,7 @@
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
       "title": "Gridded predictions of aboveground biomass (Mg/ha)",
       "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+      "gsd": 30,
       "bands": [
         {
           "data_type": "float32",

@@ -1,6 +1,7 @@
 """STAC metadata methods for icesat2-boreal collections"""
 
 import os
+import re
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -12,22 +13,28 @@ from pystac import (
     Collection,
     Extent,
     Item,
-    ItemAssetDefinition,
     Link,
-    MediaType,
     SpatialExtent,
     TemporalExtent,
     get_stac_version,
 )
-from pystac.extensions.render import Render, RenderExtension
+from pystac.extensions.render import RenderExtension
 from pystac.extensions.version import VersionRelType
 from rio_stac.stac import get_raster_info
 
 from icesat2_boreal_stac.constants import (
     BBOX,
+    COLLECTION_ASSETS,
+    COLLECTION_CITATION,
+    COLLECTION_DESCRIPTION,
     COLLECTION_ID_FORMAT,
-    CSV_MEDIA_TYPE,
-    RASTER_SIZE,
+    COLLECTION_TITLES,
+    ITEM_ASSETS,
+    LICENSE,
+    PROVIDERS,
+    RENDERS,
+    REPOSITORY_LINK,
+    SUMMARIES,
     TEMPORAL_INTERVALS,
     VERSION,
     AssetType,
@@ -36,113 +43,11 @@ from icesat2_boreal_stac.constants import (
 from icesat2_boreal_stac.s3 import cog_key_to_asset_keys
 
 # specific text fields for each variable/asset
-COLLECTION_DESCRIPTIONS = {
-    Variable.AGB: {
-        "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
-        "description": "Gridded predictions of aboveground biomass (Mg/ha) "
-        "for the boreal region built from ICESat-2/ATL08 observations at 30m segment "
-        "lengths, 30m HLS multispectral data, 30m Copernicus GLO30 topography, and 30m "
-        "ESA Worldcover 2020 v1.0 land cover data.",
-    },
-    Variable.HT: {
-        "title": "Icesat2 Boreal v2.1: Vegetation Height",
-        "description": "Gridded predictions of vegetation height (m) "
-        "for the boreal region built from ICESat-2/ATL08 observations at 30m segment "
-        "lengths, 30m HLS multispectral data, 30m Copernicus GLO30 topography, and 30m "
-        "ESA Worldcover 2020 v1.0 land cover data.",
-    },
-}
-
-TEXT = {
-    Variable.AGB: {
-        AssetType.COG: {
-            "title": "Gridded predictions of aboveground biomass (Mg/ha)",
-            "description": "Gridded predictions of aboveground biomass (Mg/ha)",
-        },
-        AssetType.TRAINING_DATA_CSV: {
-            "description": "Tabular training data with latitude, longitude, and "
-            "biomass observations",
-        },
-    },
-    Variable.HT: {
-        AssetType.COG: {
-            "title": "Gridded predictions of vegetation height (m)",
-            "description": "Gridded predictions of vegetation height (m)",
-        },
-        AssetType.TRAINING_DATA_CSV: {
-            "description": "Tabular training data with latitude, longitude, and "
-            "height observations",
-        },
-    },
-}
-
-RENDERS = {
-    Variable.AGB: {
-        "agb_viridis": Render(
-            {
-                "title": "Aboveground biomass (Mg/ha)",
-                "expression": "cog_b1",
-                "rescale": [[0, 125]],
-                "colormap_name": "viridis",
-                "minmax_zoom": [6, 18],
-            }
-        ),
-        "agb_gist_earth_r": Render(
-            {
-                "title": "Aboveground biomass (Mg/ha)",
-                "expression": "cog_b1",
-                "rescale": [[0, 400]],
-                "colormap_name": "gist_earth_r",
-                "color_formula": "gamma r 1.05",
-                "minmax_zoom": [6, 18],
-            }
-        ),
-    },
-    Variable.HT: {
-        "ht_inferno": Render(
-            {
-                "title": "Vegetation height (m)",
-                "expression": "cog_b1",
-                "rescale": [[0, 30]],
-                "colormap_name": "inferno",
-                "minmax_zoom": [6, 18],
-            }
-        )
-    },
-}
 
 
-ITEM_ASSET_PROPERTIES = {
-    AssetType.COG: {
-        "type": MediaType.COG,
-        "roles": ["data"],
-    },
-    AssetType.TRAINING_DATA_CSV: {
-        "type": CSV_MEDIA_TYPE,
-        "roles": ["data"],
-        "title": "Tabular training data",
-    },
-    # AssetType.MODEL: {
-    #     "type": RDS_MEDIA_TYPE,
-    #     "roles": ["model"],
-    #     "title": "Prediction model",
-    #     "description": "Random forest model used to generate predictions for this "
-    #     "item, stored as an .Rds",
-    # },
-}
-
-ITEM_ASSETS = {
-    variable: {
-        asset_type: ItemAssetDefinition(
-            {
-                **properties,
-                **TEXT[variable].get(asset_type, {}),
-            }
-        )
-        for asset_type, properties in ITEM_ASSET_PROPERTIES.items()
-    }
-    for variable in Variable
-}
+def format_multiline_string(string: str) -> str:
+    """Format a multi-line string for use in metadata fields"""
+    return re.sub(r" +", " ", re.sub(r"(?<!\n)\n(?!\n)", " ", string))
 
 
 def create_collection(variable: Variable) -> Collection:
@@ -153,14 +58,19 @@ def create_collection(variable: Variable) -> Collection:
 
     collection = Collection(
         id=collection_id,
-        title=COLLECTION_DESCRIPTIONS[variable]["title"],
-        description=COLLECTION_DESCRIPTIONS[variable]["description"],
+        title=COLLECTION_TITLES[variable],
+        description=format_multiline_string(COLLECTION_DESCRIPTION),
         extent=Extent(
             spatial=SpatialExtent(bboxes=[BBOX]),
             temporal=TemporalExtent(intervals=TEMPORAL_INTERVALS),
         ),
-        license="CC-BY-NC-SA-4.0",
+        license=LICENSE,
+        providers=PROVIDERS,
+        summaries=SUMMARIES,
+        assets=COLLECTION_ASSETS[variable],
     )
+
+    collection.add_link(REPOSITORY_LINK)
 
     collection.item_assets = {
         item_asset.value: asset for item_asset, asset in ITEM_ASSETS[variable].items()
@@ -179,6 +89,11 @@ def create_collection(variable: Variable) -> Collection:
         )
     )
 
+    # add processing extension
+    collection.stac_extensions.append(
+        "https://stac-extensions.github.io/processing/v1.2.0/schema.json"
+    )
+
     # if using STAC v1.0.0, add raster and item-assets extensions
     if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
         collection.ext.add("raster")
@@ -187,6 +102,12 @@ def create_collection(variable: Variable) -> Collection:
     # add render extension
     collection.ext.add("render")
     RenderExtension.ext(collection).apply(RENDERS[variable])
+
+    # add scientific extension
+    collection.ext.add("sci")
+    collection.ext.sci.apply(
+        citation=format_multiline_string(COLLECTION_CITATION),
+    )
 
     return collection
 
@@ -250,7 +171,7 @@ def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
         band_property = "bands"
 
     with rasterio.open(cog_key) as src:
-        raster_info = {band_property: get_raster_info(src, max_size=RASTER_SIZE)}
+        raster_info = {band_property: get_raster_info(src, max_size=3000)}
 
     item.assets[AssetType.COG].extra_fields.update(**raster_info)
 
