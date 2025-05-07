@@ -99,19 +99,19 @@
       "rel": "root",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "Icesat2 Boreal v2.1: Vegetation Height"
+      "title": "ICESat-2 Boreal v2.1: Vegetation Height"
     },
     {
       "rel": "collection",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "Icesat2 Boreal v2.1: Vegetation Height"
+      "title": "ICESat-2 Boreal v2.1: Vegetation Height"
     },
     {
       "rel": "parent",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "Icesat2 Boreal v2.1: Vegetation Height"
+      "title": "ICESat-2 Boreal v2.1: Vegetation Height"
     }
   ],
   "assets": {
@@ -121,6 +121,7 @@
       "title": "Gridded predictions of vegetation height (m)",
       "description": "Gridded predictions of vegetation height (m)",
       "gsd": 30,
+      "processing:level": "L4",
       "bands": [
         {
           "data_type": "float32",
