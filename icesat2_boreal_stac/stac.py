@@ -113,7 +113,7 @@ def create_collection(variable: Variable) -> Collection:
     collection.ext.sci.apply(
         citation=format_multiline_string(COLLECTION_CITATION),
     )
-
+    collection.validate()
     return collection
 
 
