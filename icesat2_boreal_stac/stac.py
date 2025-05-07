@@ -89,15 +89,20 @@ def create_collection(variable: Variable) -> Collection:
         )
     )
 
-    # add processing extension
+    # add some extensions by hand
     collection.stac_extensions.append(
-        "https://stac-extensions.github.io/processing/v1.2.0/schema.json"
+        "https://stac-extensions.github.io/processing/v1.2.0/schema.json",
     )
 
     # if using STAC v1.0.0, add raster and item-assets extensions
     if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
-        collection.ext.add("raster")
         collection.ext.add("item_assets")
+        collection.stac_extensions.append(
+            "https://stac-extensions.github.io/raster/v1.1.0/schema.json",
+        )
+        collection.item_assets[AssetType.COG].properties["raster:bands"] = (
+            collection.item_assets[AssetType.COG].properties.pop("bands")
+        )
 
     # add render extension
     collection.ext.add("render")
