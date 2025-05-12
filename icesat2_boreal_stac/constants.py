@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, Set
 
+import semver
 from pystac import (
     Asset,
     ItemAssetDefinition,
@@ -12,6 +13,7 @@ from pystac import (
     Provider,
     ProviderRole,
     Summaries,
+    get_stac_version,
 )
 from pystac.extensions.render import Render
 
@@ -148,6 +150,8 @@ Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, 
 Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground
 biomass mapping with ICESat-2. (in prep.)"""
 
+PROCESSING_LEVEL = "L4"
+
 PROVIDERS = [
     Provider(
         name="MAAP",
@@ -155,8 +159,12 @@ PROVIDERS = [
         "computational abilities for the processing and sharing of data related to "
         "NASA’s GEDI, ESA’s BIOMASS, and NASA/ISRO’s NISAR missions",
         url="https://maap-project.org",
-        roles=[ProviderRole.PROCESSOR, ProviderRole.PRODUCER],
-        extra_fields={"processing:level": "L4"},
+        roles=[
+            ProviderRole.PROCESSOR,
+            ProviderRole.PRODUCER,
+            ProviderRole.HOST,
+        ],
+        extra_fields={"processing:level": PROCESSING_LEVEL},
     )
 ]
 
@@ -184,14 +192,15 @@ SUMMARIES = Summaries(
             "minimum": 30,
             "maximum": 30,
         },
+        "processing:level": [PROCESSING_LEVEL],
     }
 )
 
 KEYWORDS = ["BIOMASS", "VEGETATION HEIGHT"]
 
 COLLECTION_TITLES = {
-    Variable.AGB: "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
-    Variable.HT: "Icesat2 Boreal v2.1: Vegetation Height",
+    Variable.AGB: "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density",
+    Variable.HT: "ICESat-2 Boreal v2.1: Vegetation Height",
 }
 
 COLLECTION_ASSETS = {
@@ -252,6 +261,7 @@ RENDERS = {
     Variable.AGB: {
         "agb_viridis": Render(
             {
+                "assets": [AssetType.COG],
                 "title": "Aboveground biomass (Mg/ha)",
                 "expression": "cog_b1",
                 "rescale": [[0, 125]],
@@ -261,6 +271,7 @@ RENDERS = {
         ),
         "agb_gist_earth_r": Render(
             {
+                "assets": [AssetType.COG],
                 "title": "Aboveground biomass (Mg/ha)",
                 "expression": "cog_b1",
                 "rescale": [[0, 400]],
@@ -273,6 +284,7 @@ RENDERS = {
     Variable.HT: {
         "ht_inferno": Render(
             {
+                "assets": [AssetType.COG],
                 "title": "Vegetation height (m)",
                 "expression": "cog_b1",
                 "rescale": [[0, 30]],
@@ -289,6 +301,7 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
         "type": MediaType.COG,
         "roles": ["data"],
         "gsd": RESOLUTION,
+        "processing:level": PROCESSING_LEVEL,
     },
     AssetType.TRAINING_DATA_CSV: {
         "type": CSV_MEDIA_TYPE,
@@ -296,6 +309,34 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
         "title": "Tabular training data",
     },
 }
+
+# if using STAC v1.0.0, add raster and item-assets extensions
+raster_bands_key = (
+    "raster:bands"
+    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0")
+    else "bands"
+)
+
+ITEM_ASSET_PROPERTIES[AssetType.COG].update(
+    {
+        raster_bands_key: [
+            {
+                "sampling": "area",
+                "nodata": "nan",
+                "scale": 1,
+                "offset": 0,
+                "data_type": "float32",
+            },
+            {
+                "sampling": "area",
+                "nodata": "nan",
+                "scale": 1,
+                "offset": 0,
+                "data_type": "float32",
+            },
+        ],
+    }
+)
 
 ITEM_ASSETS = {
     variable: {

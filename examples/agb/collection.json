@@ -8,7 +8,7 @@
       "rel": "root",
       "href": "./collection.json",
       "type": "application/json",
-      "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density"
+      "title": "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density"
     },
     {
       "rel": "about",
@@ -40,6 +40,23 @@
         "data"
       ],
       "gsd": 30,
+      "processing:level": "L4",
+      "bands": [
+        {
+          "sampling": "area",
+          "nodata": "nan",
+          "scale": 1,
+          "offset": 0,
+          "data_type": "float32"
+        },
+        {
+          "sampling": "area",
+          "nodata": "nan",
+          "scale": 1,
+          "offset": 0,
+          "data_type": "float32"
+        }
+      ],
       "title": "Gridded predictions of aboveground biomass (Mg/ha)",
       "description": "Gridded predictions of aboveground biomass (Mg/ha)"
     },
@@ -56,6 +73,9 @@
   "deprecated": false,
   "renders": {
     "agb_viridis": {
+      "assets": [
+        "cog"
+      ],
       "title": "Aboveground biomass (Mg/ha)",
       "expression": "cog_b1",
       "rescale": [
@@ -71,6 +91,9 @@
       ]
     },
     "agb_gist_earth_r": {
+      "assets": [
+        "cog"
+      ],
       "title": "Aboveground biomass (Mg/ha)",
       "expression": "cog_b1",
       "rescale": [
@@ -88,7 +111,7 @@
     }
   },
   "sci:citation": "Duncanson, L., P.M. Montesano, A. Neuenschwander, A. Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A. Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)",
-  "title": "Icesat2 Boreal v2.1: Gridded Aboveground Biomass Density",
+  "title": "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density",
   "extent": {
     "spatial": {
       "bbox": [
@@ -116,7 +139,8 @@
       "description": "The MAAP platform is designed to combine data, algorithms, and computational abilities for the processing and sharing of data related to NASA\u2019s GEDI, ESA\u2019s BIOMASS, and NASA/ISRO\u2019s NISAR missions",
       "roles": [
         "processor",
-        "producer"
+        "producer",
+        "host"
       ],
       "url": "https://maap-project.org",
       "processing:level": "L4"
@@ -138,6 +162,9 @@
     ],
     "mission": [
       "ABoVE"
+    ],
+    "processing:level": [
+      "L4"
     ],
     "gsd": {
       "minimum": 30,

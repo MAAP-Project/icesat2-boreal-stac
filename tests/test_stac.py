@@ -22,7 +22,7 @@ cog_key = (
 def test_create_item(mock_cog_key_to_asset_keys) -> None:
     """Test STAC item creation"""
     item = create_item(cog_key)
-
+    item.validate()
     assert item.id == "boreal_ht_2020_202501131736787421_0000004"
     assert (
         item.properties["start_datetime"]
@@ -39,6 +39,7 @@ def test_create_item(mock_cog_key_to_asset_keys) -> None:
 def test_create_item_v1_0_0(mock_cog_key_to_asset_keys, stac_v1_0_0) -> None:
     "Test STAC item creation for STAC v1.0.0"
     item = create_item(cog_key)
+    item.validate()
     assert item.to_dict()["stac_version"] == "1.0.0"
     assert item.ext.has("raster")
 
@@ -47,6 +48,7 @@ def test_create_item_v1_0_0(mock_cog_key_to_asset_keys, stac_v1_0_0) -> None:
 def test_create_collection(variable: Variable) -> None:
     """Test create_collection"""
     collection = create_collection(variable)
+    collection.validate()
     assert collection.ext.render
 
     assert not collection.ext.has("raster")
@@ -56,6 +58,7 @@ def test_create_collection(variable: Variable) -> None:
 def test_create_collection_v1_0_0(stac_v1_0_0) -> None:
     "Test STAC collection creation for STAC v1.0.0"
     collection = create_collection(Variable.AGB)
+    collection.validate()
     assert collection.to_dict()["stac_version"] == "1.0.0"
     assert collection.ext.has("raster")
     assert collection.ext.has("item_assets")
