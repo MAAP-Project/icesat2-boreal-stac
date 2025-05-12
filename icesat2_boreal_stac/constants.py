@@ -163,7 +163,6 @@ PROVIDERS = [
             ProviderRole.PROCESSOR,
             ProviderRole.PRODUCER,
             ProviderRole.HOST,
-            ProviderRole.LICENSOR,
         ],
         extra_fields={"processing:level": PROCESSING_LEVEL},
     )

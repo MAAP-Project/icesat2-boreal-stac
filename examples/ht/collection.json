@@ -121,8 +121,7 @@
       "roles": [
         "processor",
         "producer",
-        "host",
-        "licensor"
+        "host"
       ],
       "url": "https://maap-project.org",
       "processing:level": "L4"
