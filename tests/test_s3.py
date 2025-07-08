@@ -7,7 +7,7 @@ import pytest
 from botocore.errorfactory import ClientError
 from rasterio.session import boto3
 
-from icesat2_boreal_stac.stac import (
+from stactools.icesat2_boreal.stac import (
     AssetType,
     cog_key_to_asset_keys,
 )
@@ -56,7 +56,7 @@ def test_cog_key_to_asset_keys(
     with pytest.raises(ClientError):
         cog_key_to_asset_keys(
             f"s3://{test_bucket}/{test_cog_key}",
-            copy_to=f"s3://nope/new/",
+            copy_to="s3://nope/new/",
         )
 
 

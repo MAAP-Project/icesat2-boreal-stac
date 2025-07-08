@@ -6,7 +6,7 @@ from click import Group
 from click.testing import CliRunner
 from pystac import Collection, Item
 
-from icesat2_boreal_stac.commands import create_icesat2boreal_command
+from stactools.icesat2_boreal.commands import create_icesat2boreal_command
 
 command = create_icesat2boreal_command(Group())
 

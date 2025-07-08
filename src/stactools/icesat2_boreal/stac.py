@@ -22,7 +22,7 @@ from pystac.extensions.render import RenderExtension
 from pystac.extensions.version import VersionRelType
 from rio_stac.stac import get_raster_info
 
-from icesat2_boreal_stac.constants import (
+from stactools.icesat2_boreal.constants import (
     BBOX,
     COLLECTION_ASSETS,
     COLLECTION_CITATION,
@@ -40,7 +40,7 @@ from icesat2_boreal_stac.constants import (
     AssetType,
     Variable,
 )
-from icesat2_boreal_stac.s3 import cog_key_to_asset_keys
+from stactools.icesat2_boreal.s3 import cog_key_to_asset_keys
 
 # specific text fields for each variable/asset
 

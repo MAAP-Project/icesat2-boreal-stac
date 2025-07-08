@@ -6,7 +6,7 @@ from typing import Dict, Optional
 import boto3
 from botocore.exceptions import ClientError
 
-from icesat2_boreal_stac.constants import AssetType
+from stactools.icesat2_boreal.constants import AssetType
 
 
 def _parse_s3_path(s3_path: str) -> tuple[str, str]:

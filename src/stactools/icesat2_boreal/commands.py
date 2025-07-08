@@ -5,8 +5,8 @@ import logging
 import click
 from click import Command, Group
 
-from icesat2_boreal_stac import stac
-from icesat2_boreal_stac.constants import Variable
+from stactools.icesat2_boreal import stac
+from stactools.icesat2_boreal.constants import Variable
 
 logger = logging.getLogger(__name__)
 

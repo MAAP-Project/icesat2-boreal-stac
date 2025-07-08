@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from icesat2_boreal_stac.stac import (
+from stactools.icesat2_boreal.stac import (
     AssetType,
     Variable,
     create_collection,

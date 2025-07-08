@@ -343,48 +343,6 @@ wheels = [
 ]
 
 [[package]]
-name = "icesat2-boreal-stac"
-source = { editable = "." }
-dependencies = [
-    { name = "boto3" },
-    { name = "pystac", extra = ["validation"] },
-    { name = "rio-stac" },
-    { name = "semver" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "codespell" },
-    { name = "ipython" },
-    { name = "moto", extra = ["s3"] },
-    { name = "mypy" },
-    { name = "pre-commit" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "boto3" },
-    { name = "pystac", extras = ["validation"], specifier = ">=1.12.0" },
-    { name = "rio-stac" },
-    { name = "semver", specifier = ">=3.0.4" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "codespell", specifier = "==2.4.0" },
-    { name = "ipython", specifier = ">=8.12.3" },
-    { name = "moto", extras = ["s3"], specifier = ">=5.0.27" },
-    { name = "mypy", specifier = "==1.14.1" },
-    { name = "pre-commit", specifier = ">=3.5.0" },
-    { name = "pytest", specifier = ">=8.3.4" },
-    { name = "pytest-cov", specifier = ">=5.0.0" },
-    { name = "ruff", specifier = "==0.9.3" },
-]
-
-[[package]]
 name = "identify"
 version = "2.6.6"
 source = { registry = "https://pypi.org/simple" }
@@ -1110,6 +1068,49 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/28/e3/55dcc2cfbc3ca9c29519eb6884dd1415ecb53b0e934862d3559ddcb7e20b/stack_data-0.6.3.tar.gz", hash = "sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9", size = 44707, upload-time = "2023-09-30T13:58:05.479Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/7b/ce1eafaf1a76852e2ec9b22edecf1daa58175c090266e9f6c64afcd81d91/stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695", size = 24521, upload-time = "2023-09-30T13:58:03.53Z" },
+]
+
+[[package]]
+name = "stactools-icesat2-boreal"
+version = "0.3.0"
+source = { editable = "." }
+dependencies = [
+    { name = "boto3" },
+    { name = "pystac", extra = ["validation"] },
+    { name = "rio-stac" },
+    { name = "semver" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "codespell" },
+    { name = "ipython" },
+    { name = "moto", extra = ["s3"] },
+    { name = "mypy" },
+    { name = "pre-commit" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "boto3" },
+    { name = "pystac", extras = ["validation"], specifier = ">=1.12.0" },
+    { name = "rio-stac" },
+    { name = "semver", specifier = ">=3.0.4" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "codespell", specifier = "==2.4.0" },
+    { name = "ipython", specifier = ">=8.12.3" },
+    { name = "moto", extras = ["s3"], specifier = ">=5.0.27" },
+    { name = "mypy", specifier = "==1.14.1" },
+    { name = "pre-commit", specifier = ">=3.5.0" },
+    { name = "pytest", specifier = ">=8.3.4" },
+    { name = "pytest-cov", specifier = ">=5.0.0" },
+    { name = "ruff", specifier = "==0.9.3" },
 ]
 
 [[package]]

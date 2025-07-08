@@ -7,7 +7,7 @@ import boto3
 import pytest
 from moto import mock_aws
 
-from icesat2_boreal_stac.stac import AssetType
+from stactools.icesat2_boreal.stac import AssetType
 
 
 @pytest.fixture()
@@ -86,7 +86,8 @@ def mock_cog_key_to_asset_keys(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "icesat2_boreal_stac.stac.cog_key_to_asset_keys", mock_cog_key_to_asset_keys
+        "stactools.icesat2_boreal.stac.cog_key_to_asset_keys",
+        mock_cog_key_to_asset_keys,
     )
 
 
