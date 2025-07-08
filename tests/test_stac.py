@@ -35,6 +35,8 @@ def test_create_item(mock_cog_key_to_asset_keys) -> None:
     assert item.to_dict()["stac_version"] == "1.1.0"
     assert not item.ext.has("raster")
 
+    assert item.assets.get("cog")
+
 
 def test_create_item_v1_0_0(mock_cog_key_to_asset_keys, stac_v1_0_0) -> None:
     "Test STAC item creation for STAC v1.0.0"

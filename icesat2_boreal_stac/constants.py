@@ -1,7 +1,7 @@
 """Constants for icesat2_boreal_stac"""
 
 from datetime import datetime, timedelta, timezone
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Dict, Set
 
 import semver
@@ -18,14 +18,14 @@ from pystac import (
 from pystac.extensions.render import Render
 
 
-class Variable(str, Enum):
+class Variable(StrEnum):
     """Enumeration of the different variables"""
 
     AGB = "agb"
     HT = "ht"
 
 
-class AssetType(str, Enum):
+class AssetType(StrEnum):
     """Enumeration of all possible asset types that should be present"""
 
     COG = "cog"
