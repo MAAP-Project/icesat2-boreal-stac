@@ -10,6 +10,16 @@ from moto import mock_aws
 from icesat2_boreal_stac.stac import AssetType
 
 
+@pytest.fixture()
+def cog_key():
+    """Local cog key"""
+    return (
+        "file://"
+        + os.path.dirname(__file__)
+        + "/data/boreal_ht_2020_202501131736787421_0000004.tif"
+    )
+
+
 @pytest.fixture(scope="function")
 def aws_credentials():
     """Mocked AWS Credentials for moto."""
