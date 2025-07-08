@@ -50,7 +50,7 @@ class AssetType(str, Enum):
         return {member.value for member in cls}
 
 
-VERSION = "v2.1"
+VERSION = "v3.0"
 COLLECTION_ID_FORMAT = "icesat2-boreal-{version}-{variable}"
 
 CSV_MEDIA_TYPE = "text/csv"
@@ -198,9 +198,12 @@ SUMMARIES = Summaries(
 
 KEYWORDS = ["BIOMASS", "VEGETATION HEIGHT"]
 
+COLLECTION_TITLE_PREFIX = (
+    f"Circumpolar boreal forest structure from ICESat-2 & HLS ({VERSION})"
+)
 COLLECTION_TITLES = {
-    Variable.AGB: "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density",
-    Variable.HT: "ICESat-2 Boreal v2.1: Vegetation Height",
+    Variable.AGB: f"{COLLECTION_TITLE_PREFIX}: 30m aboveground woody biomass density",
+    Variable.HT: f"{COLLECTION_TITLE_PREFIX}: 30m vegetation height",
 }
 
 COLLECTION_ASSETS = {
