@@ -131,7 +131,7 @@ def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
     collection_id = COLLECTION_ID_FORMAT.format(
         version=VERSION, variable=variable.value
     )
-    created_datetime = datetime.strptime(id_parts[3][:8], "%Y%M%d")
+    created_datetime = datetime.strptime(id_parts[3][:8], "%Y%m%d")
     item_start_datetime = datetime.strptime(id_parts[2], "%Y")
     item_end_datetime = (
         item_start_datetime + relativedelta(years=1) - timedelta(seconds=1)
