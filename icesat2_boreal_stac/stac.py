@@ -139,7 +139,7 @@ def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
 
     # generate dictionary of assets
     item_assets = {
-        asset: ITEM_ASSETS[variable][asset].create_asset(key)
+        str(asset): ITEM_ASSETS[variable][asset].create_asset(key)
         for asset, key in asset_keys.items()
     }
 
