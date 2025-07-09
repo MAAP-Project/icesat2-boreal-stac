@@ -19,9 +19,9 @@ cog_key = (
 )
 
 
-def test_create_item(mock_cog_key_to_asset_keys) -> None:
+def test_create_item(cog_key: str) -> None:
     """Test STAC item creation"""
-    item = create_item(cog_key)
+    item = create_item(cog_key, "file://training_data.csv")
     item.validate()
     assert item.id == "boreal_ht_2020_202501131736787421_0000004"
     assert (
@@ -38,9 +38,9 @@ def test_create_item(mock_cog_key_to_asset_keys) -> None:
     assert item.assets.get("cog")
 
 
-def test_create_item_v1_0_0(mock_cog_key_to_asset_keys, stac_v1_0_0) -> None:
+def test_create_item_v1_0_0(stac_v1_0_0) -> None:
     "Test STAC item creation for STAC v1.0.0"
-    item = create_item(cog_key)
+    item = create_item(cog_key, "file://training_data.csv")
     item.validate()
     assert item.to_dict()["stac_version"] == "1.0.0"
     assert item.ext.has("raster")

@@ -3,7 +3,6 @@
 import os
 import re
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
 import rasterio
 import rio_stac
@@ -40,7 +39,6 @@ from stactools.icesat2_boreal.constants import (
     AssetType,
     Variable,
 )
-from stactools.icesat2_boreal.s3 import cog_key_to_asset_keys
 
 # specific text fields for each variable/asset
 
@@ -117,10 +115,9 @@ def create_collection(variable: Variable) -> Collection:
     return collection
 
 
-def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
+def create_item(cog_key: str, csv_key: str) -> Item:
     """Create a STAC item given the S3 key for a COG"""
-    asset_keys = cog_key_to_asset_keys(cog_key, copy_to)
-    cog_key = asset_keys[AssetType.COG]
+    asset_keys = {AssetType.COG: cog_key, AssetType.TRAINING_DATA_CSV: csv_key}
 
     item_id = os.path.splitext(os.path.basename(cog_key))[0]
 

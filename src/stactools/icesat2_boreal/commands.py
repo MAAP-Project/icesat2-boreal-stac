@@ -38,16 +38,17 @@ def create_icesat2boreal_command(cli: Group) -> Command:
         collection.save_object()
 
     @icesat2boreal.command("create-item", short_help="Create a STAC item")
-    @click.argument("source")
+    @click.argument("cog_source")
+    @click.argument("csv_source")
     @click.argument("destination")
-    def create_item_command(source: str, destination: str) -> None:
+    def create_item_command(cog_source: str, csv_source: str, destination: str) -> None:
         """Creates a STAC Item
 
         Args:
             source: HREF of the Asset associated with the Item
             destination: An HREF for the STAC Item
         """
-        item = stac.create_item(source)
+        item = stac.create_item(cog_source, csv_source)
         item.save_object(dest_href=destination)
 
     return icesat2boreal
