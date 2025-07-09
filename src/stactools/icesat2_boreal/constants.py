@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta, timezone
 from enum import StrEnum
-from typing import Any, Dict, Set
+from typing import Any, Dict, List, Set
 
 import semver
 from pystac import (
@@ -198,8 +198,32 @@ SUMMARIES = Summaries(
 
 KEYWORDS = ["BIOMASS", "VEGETATION HEIGHT"]
 
+
+def format_year_range(temporal_interval: List[datetime]) -> str:
+    """
+    Format a year range string from temporal intervals.
+
+    Args:
+        temporal_intervals: List of [start_datetime, end_datetime] pairs
+
+    Returns:
+        str: Year range string (e.g., "2020" or "2020-2024")
+    """
+
+    start_date, end_date = temporal_interval
+
+    start_year = start_date.year
+    end_year = end_date.year
+
+    if start_year == end_year:
+        return str(start_year)
+    else:
+        return f"{start_year}-{end_year}"
+
+
 COLLECTION_TITLE_PREFIX = (
-    f"Circumpolar boreal forest structure from ICESat-2 & HLS ({VERSION})"
+    "Circumpolar boreal forest structure from ICESat-2 & HLS "
+    f"({format_year_range(TEMPORAL_INTERVALS[0])} {VERSION})"
 )
 COLLECTION_TITLES = {
     Variable.AGB: f"{COLLECTION_TITLE_PREFIX}: 30m aboveground woody biomass density",

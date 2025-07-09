@@ -8,7 +8,7 @@
       "rel": "root",
       "href": "./collection.json",
       "type": "application/json",
-      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (v3.0): 30m vegetation height"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m vegetation height"
     },
     {
       "rel": "about",
@@ -92,7 +92,7 @@
     }
   },
   "sci:citation": "Duncanson, L., P.M. Montesano, A. Neuenschwander, A. Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A. Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)",
-  "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (v3.0): 30m vegetation height",
+  "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m vegetation height",
   "extent": {
     "spatial": {
       "bbox": [

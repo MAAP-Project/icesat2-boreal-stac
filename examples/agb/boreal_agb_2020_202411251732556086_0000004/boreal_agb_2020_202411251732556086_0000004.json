@@ -99,19 +99,19 @@
       "rel": "root",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (v3.0): 30m aboveground woody biomass density"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density"
     },
     {
       "rel": "collection",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (v3.0): 30m aboveground woody biomass density"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density"
     },
     {
       "rel": "parent",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (v3.0): 30m aboveground woody biomass density"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density"
     }
   ],
   "assets": {
