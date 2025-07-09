@@ -1575,7 +1575,6 @@ name = "stactools-icesat2-boreal"
 version = "0.3.0"
 source = { editable = "." }
 dependencies = [
-    { name = "boto3" },
     { name = "pystac", extra = ["validation"] },
     { name = "rio-stac" },
     { name = "semver" },
@@ -1596,7 +1595,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "boto3" },
     { name = "pystac", extras = ["validation"], specifier = ">=1.12.0" },
     { name = "rio-stac" },
     { name = "semver", specifier = ">=3.0.4" },
