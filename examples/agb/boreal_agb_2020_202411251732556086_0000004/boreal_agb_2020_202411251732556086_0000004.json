@@ -124,13 +124,14 @@
       "processing:level": "L4",
       "bands": [
         {
-          "name": "estimate",
+          "name": "predicted",
           "sampling": "area",
           "nodata": "nan",
           "scale": 1.0,
           "offset": 0.0,
           "data_type": "float32",
           "spatial_resolution": 30,
+          "unit": "Mg ha-1",
           "statistics": {
             "mean": 25.231708351145954,
             "minimum": 0.7163138389587402,
@@ -164,6 +165,7 @@
           "offset": 0.0,
           "data_type": "float32",
           "spatial_resolution": 30,
+          "unit": "Mg ha-1",
           "statistics": {
             "mean": 6.358231551128997,
             "minimum": 0.6042453646659851,

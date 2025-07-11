@@ -43,13 +43,14 @@
       "processing:level": "L4",
       "bands": [
         {
-          "name": "estimate",
+          "name": "predicted",
           "sampling": "area",
           "nodata": "nan",
           "scale": 1,
           "offset": 0,
           "data_type": "float32",
-          "spatial_resolution": 30
+          "spatial_resolution": 30,
+          "unit": "Mg ha-1"
         },
         {
           "name": "sd",
@@ -58,7 +59,8 @@
           "scale": 1,
           "offset": 0,
           "data_type": "float32",
-          "spatial_resolution": 30
+          "spatial_resolution": 30,
+          "unit": "Mg ha-1"
         }
       ],
       "title": "Gridded predictions of aboveground biomass (Mg/ha)",

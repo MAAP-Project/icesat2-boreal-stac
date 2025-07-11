@@ -286,6 +286,11 @@ RENDERS = {
 }
 
 
+UNITS = {
+    Variable.AGB: "Mg ha-1",
+    Variable.HT: "m",
+}
+
 ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
     AssetType.COG: {
         "type": MediaType.COG,
@@ -294,7 +299,7 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
         "processing:level": PROCESSING_LEVEL,
         "bands": [
             {
-                "name": "estimate",
+                "name": "predicted",
                 "sampling": "area",
                 "nodata": "nan",
                 "scale": 1,
@@ -326,6 +331,16 @@ ITEM_ASSETS = {
             {
                 **ITEM_ASSET_PROPERTIES[asset_type],
                 **TEXT[variable][asset_type],
+                **(
+                    {
+                        "bands": [
+                            {**band, "unit": UNITS[variable]}
+                            for band in ITEM_ASSET_PROPERTIES[asset_type]["bands"]
+                        ]
+                    }
+                    if asset_type == AssetType.COG
+                    else {}
+                ),
             }
         )
         for asset_type in AssetType
