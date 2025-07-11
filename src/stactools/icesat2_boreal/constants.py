@@ -193,10 +193,14 @@ COLLECTION_TITLES = {
     Variable.HT: f"{COLLECTION_TITLE_PREFIX}: 30m vegetation height",
 }
 
+TILE_GPKG_BUCKET = "nasa-maap-data-store"
+TILE_GPKG_KEY = "file-staging/nasa-map/boreal_tiles_v004.gpkg"
+TILE_GPKG_HREF = f"s3://{TILE_GPKG_BUCKET}/{TILE_GPKG_KEY}"
+
 COLLECTION_ASSETS = {
     Variable.AGB: {
         "tiles": Asset(
-            href="s3://nasa-maap-data-store/file-staging/nasa-map/boreal_tiles_v004_ORNLDAAC.gpkg",
+            href=TILE_GPKG_HREF,
             title="Processing tiles",
             description="90 km tile geometries for processing AGB predictions",
             media_type=MediaType.GEOPACKAGE,
@@ -205,7 +209,7 @@ COLLECTION_ASSETS = {
     },
     Variable.HT: {
         "tiles": Asset(
-            href="s3://nasa-maap-data-store/file-staging/nasa-map/boreal_tiles_v004_ORNLDAAC.gpkg",
+            href=TILE_GPKG_HREF,
             title="Processing tiles",
             description="90 km tile geometries for processing vegetation height "
             "predictions",
