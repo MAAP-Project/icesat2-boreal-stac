@@ -313,18 +313,22 @@ ITEM_ASSET_PROPERTIES[AssetType.COG].update(
     {
         raster_bands_key: [
             {
+                "name": "estimate",
                 "sampling": "area",
                 "nodata": "nan",
                 "scale": 1,
                 "offset": 0,
                 "data_type": "float32",
+                "spatial_resolution": RESOLUTION,
             },
             {
+                "name": "sd",
                 "sampling": "area",
                 "nodata": "nan",
                 "scale": 1,
                 "offset": 0,
                 "data_type": "float32",
+                "spatial_resolution": RESOLUTION,
             },
         ],
     }
