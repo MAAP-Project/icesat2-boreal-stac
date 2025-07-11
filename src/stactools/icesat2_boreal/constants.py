@@ -196,7 +196,7 @@ COLLECTION_TITLES = {
 COLLECTION_ASSETS = {
     Variable.AGB: {
         "tiles": Asset(
-            href="s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
+            href="s3://nasa-maap-data-store/file-staging/nasa-map/boreal_tiles_v004_ORNLDAAC.gpkg",
             title="Processing tiles",
             description="90 km tile geometries for processing AGB predictions",
             media_type=MediaType.GEOPACKAGE,
@@ -205,7 +205,7 @@ COLLECTION_ASSETS = {
     },
     Variable.HT: {
         "tiles": Asset(
-            href="s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/ht/boreal_tiles_v004_HT_H30_2020_ORNLDAAC.gpkg",
+            href="s3://nasa-maap-data-store/file-staging/nasa-map/boreal_tiles_v004_ORNLDAAC.gpkg",
             title="Processing tiles",
             description="90 km tile geometries for processing vegetation height "
             "predictions",
