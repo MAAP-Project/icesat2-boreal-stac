@@ -124,11 +124,13 @@
       "processing:level": "L4",
       "bands": [
         {
-          "data_type": "float32",
-          "scale": 1.0,
-          "offset": 0.0,
+          "name": "estimate",
           "sampling": "area",
           "nodata": "nan",
+          "scale": 1.0,
+          "offset": 0.0,
+          "data_type": "float32",
+          "spatial_resolution": 30,
           "statistics": {
             "mean": 6.578742682103879,
             "minimum": 0.19289742410182953,
@@ -155,11 +157,13 @@
           }
         },
         {
-          "data_type": "float32",
-          "scale": 1.0,
-          "offset": 0.0,
+          "name": "sd",
           "sampling": "area",
           "nodata": "nan",
+          "scale": 1.0,
+          "offset": 0.0,
+          "data_type": "float32",
+          "spatial_resolution": 30,
           "statistics": {
             "mean": 1.2272658317405023,
             "minimum": 0.23236653208732605,

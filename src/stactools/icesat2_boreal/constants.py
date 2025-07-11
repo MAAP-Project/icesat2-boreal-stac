@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, timezone
 from enum import StrEnum
 from typing import Any, Dict, List, Set
 
-import semver
 from pystac import (
     Asset,
     ItemAssetDefinition,
@@ -13,7 +12,6 @@ from pystac import (
     Provider,
     ProviderRole,
     Summaries,
-    get_stac_version,
 )
 from pystac.extensions.render import Render
 
@@ -294,24 +292,7 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
         "roles": ["data"],
         "gsd": RESOLUTION,
         "processing:level": PROCESSING_LEVEL,
-    },
-    AssetType.TRAINING_DATA_CSV: {
-        "type": CSV_MEDIA_TYPE,
-        "roles": ["data"],
-        "title": "Tabular training data",
-    },
-}
-
-# if using STAC v1.0.0, add raster and item-assets extensions
-raster_bands_key = (
-    "raster:bands"
-    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0")
-    else "bands"
-)
-
-ITEM_ASSET_PROPERTIES[AssetType.COG].update(
-    {
-        raster_bands_key: [
+        "bands": [
             {
                 "name": "estimate",
                 "sampling": "area",
@@ -331,8 +312,13 @@ ITEM_ASSET_PROPERTIES[AssetType.COG].update(
                 "spatial_resolution": RESOLUTION,
             },
         ],
-    }
-)
+    },
+    AssetType.TRAINING_DATA_CSV: {
+        "type": CSV_MEDIA_TYPE,
+        "roles": ["data"],
+        "title": "Tabular training data",
+    },
+}
 
 ITEM_ASSETS = {
     variable: {

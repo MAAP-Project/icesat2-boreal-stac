@@ -6,7 +6,6 @@ from datetime import datetime, timedelta, timezone
 
 import rasterio
 import rio_stac
-import semver
 from dateutil.relativedelta import relativedelta
 from pystac import (
     Collection,
@@ -15,7 +14,6 @@ from pystac import (
     Link,
     SpatialExtent,
     TemporalExtent,
-    get_stac_version,
 )
 from pystac.extensions.render import RenderExtension
 from pystac.extensions.version import VersionRelType
@@ -92,16 +90,6 @@ def create_collection(variable: Variable) -> Collection:
         "https://stac-extensions.github.io/processing/v1.2.0/schema.json",
     )
 
-    # if using STAC v1.0.0, add raster and item-assets extensions
-    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
-        collection.ext.add("item_assets")
-        collection.stac_extensions.append(
-            "https://stac-extensions.github.io/raster/v1.1.0/schema.json",
-        )
-        collection.item_assets[AssetType.COG].properties["raster:bands"] = (
-            collection.item_assets[AssetType.COG].properties.pop("bands")
-        )
-
     # add render extension
     collection.ext.add("render")
     RenderExtension.ext(collection).apply(RENDERS[variable])
@@ -135,8 +123,9 @@ def create_item(cog_key: str, csv_key: str) -> Item:
     )
 
     # generate dictionary of assets
+    collection_item_assets = ITEM_ASSETS[variable]
     item_assets = {
-        str(asset): ITEM_ASSETS[variable][asset].create_asset(key)
+        str(asset): collection_item_assets[asset].create_asset(key).clone()
         for asset, key in asset_keys.items()
     }
 
@@ -163,19 +152,11 @@ def create_item(cog_key: str, csv_key: str) -> Item:
         with_proj=True,
     )
 
-    # retrieve the raster info separately
-    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
-        item.stac_extensions.append(
-            "https://stac-extensions.github.io/raster/v1.1.0/schema.json"
-        )
-        band_property = "raster:bands"
-    else:
-        band_property = "bands"
-
     with rasterio.open(cog_key) as src:
-        raster_info = {band_property: get_raster_info(src, max_size=3000)}
+        raster_info = get_raster_info(src, max_size=3000)
 
-    item.assets[AssetType.COG].extra_fields.update(**raster_info)
+    for i, band in enumerate(raster_info):
+        item.assets[AssetType.COG].extra_fields["bands"][i].update(band)
 
     item.validate()
 
