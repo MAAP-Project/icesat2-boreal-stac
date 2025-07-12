@@ -1,14 +1,14 @@
 {
   "type": "Collection",
-  "id": "icesat2-boreal-v2.1-ht",
+  "id": "icesat2-boreal-v3.0-ht",
   "stac_version": "1.1.0",
-  "description": "This dataset provides predictions of woody Aboveground Biomass Density (AGBD) and vegetation height for high northern latitude forests at a 30-m spatial resolution. It is designed both for circumpolar boreal-wide mapping and filling the northern spatial data gap from NASA's Global Ecosystem Dynamics Investigation (GEDI) mission. Mapping woody AGBD and height is essential for understanding, monitoring, and managing forest carbon stocks and fluxes. The AGBD and height predictions cover the extent of high latitude boreal forests and shrublands, and extend southward outside the boreal domain to 51.6\u00b0N. These maps represent conditions in 2020.\n\nICESat-2 ATL08 represented the training data for these mapped products, with ATL08\u2019s maximum height (h_canopy) used to train the height product, and estimates of 30-m AGBD from ATL08 used to train the AGBD product. AGBD and vegetation models were developed using local moving window models, with models produced for a suite of 90 km tiles.\n\nPrediction of AGBD involved two modeling steps: (1) regression with ordinary least squares (OLS) to relate field plot measurements of AGBD to NASA's ICESat-2 30-m ATL08 lidar samples, and (2) machine learning modeling with random forest to extend estimates beyond the field plots by relating ICESat-2 AGBD predictions to wall-to-wall gridded covariate stacks from Harmonized Landsat/Sentinel-2 (HLS) and the Copernicus GLO30 DEM. Per-pixel uncertainties are estimated from bootstrapping both models.\n\nPrediction of vegetation height used the second of the two steps for AGBD, since what would otherwise be the dependent variable (height) is a direct measurement from ICESat-2 ATL08. Uncertainty was therefore estimated from bootstrapping the random forest model, with no propagation of any uncertainties from the ICESat-2 height measurements.\n\nUncertainties were estimated using bootstrapping of training data to produce a suite of models and maps, which were then summarized to produce pixel-level standard error estimates. Models were re-fit for each 90 km tile until the variance of the 90 km AGBD total stabilized (less than 5% change in the variance of tile total AGBD). The pixel-level SD is calculated as the SD of the set of pixel predictions from these iterations.\n\nThis dataset features predictions for landcovers that are associated with the full woody structure gradient according to the European Space Agency\u2019s Worldcover v1.0 2020 dataset. This primarily includes forests, shrubs, and grass extents in which woody vegetation is present. Importantly, predictions were also made for the \u2018moss/lichen\u2019 land cover. The decision to include these pixels considered the broad domain of this study, where areas from the far north down to southern portions featured this classification, but represented very different apparent land uses. In northern portions, this classification occurs frequently across tundra extents (eg, the Brooks Range), whereas in the south it appears at sites of recent forest clearing. Non-vegetated land covers (e.g. built up, water, rock, ice) were masked out of our predictions.\n\nHLS composites and ICESat-2 data were from 2020 to produce a single-year 2020 map. ICESat-2 data were filtered to include only strong beams, growing seasons (June through September), solar elevations less than 5 degrees, snow free land (snow flag set to 1), and \"msw_flag\" equal to 0 (clear skies and no observed atmospheric scattering). ICESat-2's ATL08 product was resampled to a 30-m spatial resolution to better match both the field plots and mapped pixels, which involved reprocessing the nominal 100-m segments to 30-m segments. HLS data (both the L30 and S30 products) were used to create a harmonized (HLSH30) greenest pixel composite of growing season multispectral data, which was then used to compute a suite of vegetation indices: NDVI, NDWI, NBR, NBR2, TCW, TCG. These were then used, in combination with a suite of topographic information (elevation, slope, topographic solar radiation index, topographic position index, and a binary slope mask indicating flat pixels) from the Copernicus DEM product, to predict 30-m AGBD per 90-km tile. Estimates of mean AGBD and mean vegetation height with standard deviation are provided in cloud-optimized GeoTIFF (CoG) format. The product consists of a set of raster grids and tabular (CSV) files referenced to a set of 90-km tiles that cover the circumpolar boreal domain and south to 51.6\u00b0N (Figure 1). Each raster grid is a 2-band file where the first and second band represent the mean and standard deviation pixel values that result from the bootstrapped prediction. The CSV files feature the ICESat-2 ATL08 30 m segment centroids that were used as training data in the prediction of each raster. A polygon map of these data tiles is included as a GeoPackage file and a Shapefile. This product was generated on the NASA-ESA Multi-Mission Algorithm and Analysis Platform (MAAP, https://scimaap.net), an open science platform. All code and input files are publicly available: [https://github.com/lauraduncanson/icesat2_boreal.git](https://repo.ops.maap-project.org/icesat2_boreal/icesat2_boreal.git).\n\nFor each product (AGB and height) there are 3902 cloud-optimized GeoTIFFs, 3902 tables in comma-separated values (CSV) format, and 1 geopackage tile index.",
+  "description": "This dataset provides predictions of woody aboveground biomass density (AGBD) and vegetation height for high northern latitude forests at 30 m spatial resolution for the year 2020, accounting for >30% of global forest area.\n\nMaps of woody AGBD and height are essential for understanding patterns of forest structure, including the mass of forest vegetation, its carbon content, and its vertical and horizontal arrangement across managed and unmanaged landscapes. These maps are optimized to visualize these patterns, monitor forest conditions, and manage forest carbon stocks and their changes. The information contained in these maps provides insights into the current conditions and shifts in a global biome that is shaped by natural processes that play out across decades to millennia, as well as human decisions, and whose status and functioning affects wildlife, the climate, economies, and the wellbeing of public and private sector stakeholders both within and outside of the north.\n\nThese maps are built with state-of-the-art earth observation datasets collected from space, including lidar observations from NASA\u2019s ICESat-2 and imagery from NASA\u2019s Harmonized Landsat/Sentinel-2 project. They are designed for circumpolar boreal-wide mapping from local to global scales and provide the northern component of global forest structure estimates, to which complementary estimates from NASA's Global Ecosystem Dynamics Investigation (GEDI) mission contribute temperate and tropical portions. The AGBD and height predictions cover the extent of high latitude boreal forests and shrublands, and while they extend southward outside the boreal domain nominally to ~50\u00b0N they are intended to contribute to global estimates northward from 51.6\u00b0N.\n\nThe compilation of these maps is a final value-added step made possible by decades of investment coupled with world-class expertise from the US Government into engineering, space, and earth science. With this long-term investment, NASA and its federal (USGS, NOAA), international, and private sector partners have conceived of, tested, built, launched, collected and processed data from, and maintained a constellation of, earth observation satellites that provide the fundamental measurements used to build these maps.\n\nThese maps are compiled on a platform built for geoscience algorithm development and data processing that uses Amazon Web Services. This platform (the Multi-mission Algorithm and Analysis Platform; www.maap-project.org) is the result of an international partnership between NASA and the European Space Agency to promote and support science that is accessible, reproducible, and well-documented. This work is the result of a collaboration of a team of scientists and engineers from the University of Maryland-College Park, NASA Goddard Space Flight Center, the University of Texas-Austin, NASA Jet Propulsion Lab, and Development Seed. The primary funding source for this work came through NASA Terrestrial Ecology Program grants associated with NASA\u2019s decade-long Arctic/Boreal Vulnerability Experiment (http://above.nasa.gov)",
   "links": [
     {
       "rel": "root",
       "href": "./collection.json",
       "type": "application/json",
-      "title": "ICESat-2 Boreal v2.1: Vegetation Height"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m vegetation height"
     },
     {
       "rel": "about",
@@ -19,6 +19,11 @@
     {
       "rel": "predecessor-version",
       "href": "https://stac.maap-project.org/collections/icesat2-boreal",
+      "title": "Previous version"
+    },
+    {
+      "rel": "predecessor-version",
+      "href": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-ht",
       "title": "Previous version"
     },
     {
@@ -43,18 +48,24 @@
       "processing:level": "L4",
       "bands": [
         {
+          "name": "predicted",
           "sampling": "area",
           "nodata": "nan",
           "scale": 1,
           "offset": 0,
-          "data_type": "float32"
+          "data_type": "float32",
+          "spatial_resolution": 30,
+          "unit": "m"
         },
         {
+          "name": "sd",
           "sampling": "area",
           "nodata": "nan",
           "scale": 1,
           "offset": 0,
-          "data_type": "float32"
+          "data_type": "float32",
+          "spatial_resolution": 30,
+          "unit": "m"
         }
       ],
       "title": "Gridded predictions of vegetation height (m)",
@@ -69,7 +80,7 @@
       "description": "Tabular training data with latitude, longitude, and height observations"
     }
   },
-  "version": "v2.1",
+  "version": "v3.0",
   "deprecated": false,
   "renders": {
     "ht_inferno": {
@@ -92,7 +103,7 @@
     }
   },
   "sci:citation": "Duncanson, L., P.M. Montesano, A. Neuenschwander, A. Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A. Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)",
-  "title": "ICESat-2 Boreal v2.1: Vegetation Height",
+  "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m vegetation height",
   "extent": {
     "spatial": {
       "bbox": [
@@ -154,7 +165,7 @@
   },
   "assets": {
     "tiles": {
-      "href": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/ht/boreal_tiles_v004_HT_H30_2020_ORNLDAAC.gpkg",
+      "href": "s3://nasa-maap-data-store/file-staging/nasa-map/boreal_tiles_v004.gpkg",
       "type": "application/geopackage+sqlite3",
       "title": "Processing tiles",
       "description": "90 km tile geometries for processing vegetation height predictions",

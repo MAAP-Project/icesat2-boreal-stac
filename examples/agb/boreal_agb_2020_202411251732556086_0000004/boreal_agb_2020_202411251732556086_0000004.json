@@ -41,7 +41,7 @@
   "properties": {
     "start_datetime": "2020-01-01T00:00:00+00:00",
     "end_datetime": "2020-12-31T23:59:59+00:00",
-    "created_datetime": "2024-01-25T00:11:00+00:00",
+    "created_datetime": "2024-11-25T00:00:00+00:00",
     "proj:epsg": null,
     "proj:geometry": {
       "type": "Polygon",
@@ -99,19 +99,19 @@
       "rel": "root",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density"
     },
     {
       "rel": "collection",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density"
     },
     {
       "rel": "parent",
       "href": "../collection.json",
       "type": "application/json",
-      "title": "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density"
     }
   ],
   "assets": {
@@ -124,11 +124,14 @@
       "processing:level": "L4",
       "bands": [
         {
-          "data_type": "float32",
-          "scale": 1.0,
-          "offset": 0.0,
+          "name": "predicted",
           "sampling": "area",
           "nodata": "nan",
+          "scale": 1.0,
+          "offset": 0.0,
+          "data_type": "float32",
+          "spatial_resolution": 30,
+          "unit": "Mg ha-1",
           "statistics": {
             "mean": 25.231708351145954,
             "minimum": 0.7163138389587402,
@@ -155,11 +158,14 @@
           }
         },
         {
-          "data_type": "float32",
-          "scale": 1.0,
-          "offset": 0.0,
+          "name": "sd",
           "sampling": "area",
           "nodata": "nan",
+          "scale": 1.0,
+          "offset": 0.0,
+          "data_type": "float32",
+          "spatial_resolution": 30,
+          "unit": "Mg ha-1",
           "statistics": {
             "mean": 6.358231551128997,
             "minimum": 0.6042453646659851,
@@ -200,5 +206,5 @@
       ]
     }
   },
-  "collection": "icesat2-boreal-v2.1-agb"
+  "collection": "icesat2-boreal-v3.0-agb"
 }

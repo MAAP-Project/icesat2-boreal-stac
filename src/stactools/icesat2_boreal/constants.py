@@ -1,10 +1,9 @@
 """Constants for icesat2_boreal_stac"""
 
 from datetime import datetime, timedelta, timezone
-from enum import Enum
-from typing import Any, Dict, Set
+from enum import StrEnum
+from typing import Any, Dict, List, Set
 
-import semver
 from pystac import (
     Asset,
     ItemAssetDefinition,
@@ -13,19 +12,18 @@ from pystac import (
     Provider,
     ProviderRole,
     Summaries,
-    get_stac_version,
 )
 from pystac.extensions.render import Render
 
 
-class Variable(str, Enum):
+class Variable(StrEnum):
     """Enumeration of the different variables"""
 
     AGB = "agb"
     HT = "ht"
 
 
-class AssetType(str, Enum):
+class AssetType(StrEnum):
     """Enumeration of all possible asset types that should be present"""
 
     COG = "cog"
@@ -50,7 +48,7 @@ class AssetType(str, Enum):
         return {member.value for member in cls}
 
 
-VERSION = "v2.1"
+VERSION = "v3.0"
 COLLECTION_ID_FORMAT = "icesat2-boreal-{version}-{variable}"
 
 CSV_MEDIA_TYPE = "text/csv"
@@ -66,84 +64,49 @@ TEMPORAL_INTERVALS = [
 
 LICENSE = "CC-BY"
 
-COLLECTION_DESCRIPTION = """This dataset provides predictions of woody Aboveground
-Biomass Density (AGBD) and vegetation height for high northern latitude forests at a
-30-m spatial resolution. It is designed both for circumpolar boreal-wide mapping and
-filling the northern spatial data gap from NASA's Global Ecosystem Dynamics
-Investigation (GEDI) mission. Mapping woody AGBD and height is essential for
-understanding, monitoring, and managing forest carbon stocks and fluxes. The
+COLLECTION_DESCRIPTION = """This dataset provides predictions of woody aboveground
+biomass density (AGBD) and vegetation height for high northern latitude forests at 30 m
+spatial resolution for the year 2020, accounting for >30% of global forest area.
+
+Maps of woody AGBD and height are essential for understanding patterns of forest
+structure, including the mass of forest vegetation, its carbon content, and its vertical
+and horizontal arrangement across managed and unmanaged landscapes. These maps are
+optimized to visualize these patterns, monitor forest conditions, and manage forest
+carbon stocks and their changes. The information contained in these maps provides
+insights into the current conditions and shifts in a global biome that is shaped by
+natural processes that play out across decades to millennia, as well as human decisions,
+and whose status and functioning affects wildlife, the climate, economies, and the
+wellbeing of public and private sector stakeholders both within and outside of the
+north.
+
+These maps are built with state-of-the-art earth observation datasets collected from
+space, including lidar observations from NASA’s ICESat-2 and imagery from NASA’s
+Harmonized Landsat/Sentinel-2 project. They are designed for circumpolar boreal-wide
+mapping from local to global scales and provide the northern component of global forest
+structure estimates, to which complementary estimates from NASA's Global Ecosystem
+Dynamics Investigation (GEDI) mission contribute temperate and tropical portions. The
 AGBD and height predictions cover the extent of high latitude boreal forests and
-shrublands, and extend southward outside the boreal domain to 51.6°N. These maps
-represent conditions in 2020.
+shrublands, and while they extend southward outside the boreal domain nominally to ~50°N
+they are intended to contribute to global estimates northward from 51.6°N.
 
-ICESat-2 ATL08 represented the training data for these mapped products, with
-ATL08’s maximum height (h_canopy) used to train the height product, and
-estimates of 30-m AGBD from ATL08 used to train the AGBD product. AGBD and
-vegetation models were developed using local moving window models, with models
-produced for a suite of 90 km tiles.
+The compilation of these maps is a final value-added step made possible by decades of
+investment coupled with world-class expertise from the US Government into engineering,
+space, and earth science. With this long-term investment, NASA and its federal (USGS,
+NOAA), international, and private sector partners have conceived of, tested, built,
+launched, collected and processed data from, and maintained a constellation of, earth
+observation satellites that provide the fundamental measurements used to build these
+maps.
 
-Prediction of AGBD involved two modeling steps: (1) regression with ordinary
-least squares (OLS) to relate field plot measurements of AGBD to NASA's ICESat-2
-30-m ATL08 lidar samples, and (2) machine learning modeling with random forest
-to extend estimates beyond the field plots by relating ICESat-2 AGBD predictions
-to wall-to-wall gridded covariate stacks from Harmonized Landsat/Sentinel-2
-(HLS) and the Copernicus GLO30 DEM. Per-pixel uncertainties are estimated from
-bootstrapping both models.
-
-Prediction of vegetation height used the second of the two steps for AGBD, since
-what would otherwise be the dependent variable (height) is a direct measurement
-from ICESat-2 ATL08. Uncertainty was therefore estimated from bootstrapping the
-random forest model, with no propagation of any uncertainties from the ICESat-2
-height measurements.
-
-Uncertainties were estimated using bootstrapping of training data to produce a
-suite of models and maps, which were then summarized to produce pixel-level
-standard error estimates. Models were re-fit for each 90 km tile until the
-variance of the 90 km AGBD total stabilized (less than 5% change in the variance
-of tile total AGBD). The pixel-level SD is calculated as the SD of the set of
-pixel predictions from these iterations.
-
-This dataset features predictions for landcovers that are associated with the
-full woody structure gradient according to the European Space Agency’s
-Worldcover v1.0 2020 dataset. This primarily includes forests, shrubs, and grass
-extents in which woody vegetation is present. Importantly, predictions were also
-made for the ‘moss/lichen’ land cover. The decision to include these pixels
-considered the broad domain of this study, where areas from the far north down
-to southern portions featured this classification, but represented very
-different apparent land uses. In northern portions, this classification occurs
-frequently across tundra extents (eg, the Brooks Range), whereas in the south it
-appears at sites of recent forest clearing. Non-vegetated land covers (e.g.
-built up, water, rock, ice) were masked out of our predictions.
-
-HLS composites and ICESat-2 data were from 2020 to produce a single-year 2020
-map. ICESat-2 data were filtered to include only strong beams, growing seasons
-(June through September), solar elevations less than 5 degrees, snow free land
-(snow flag set to 1), and "msw_flag" equal to 0 (clear skies and no observed
-atmospheric scattering). ICESat-2's ATL08 product was resampled to a 30-m
-spatial resolution to better match both the field plots and mapped pixels, which
-involved reprocessing the nominal 100-m segments to 30-m segments. HLS data
-(both the L30 and S30 products) were used to create a harmonized (HLSH30)
-greenest pixel composite of growing season multispectral data, which was then
-used to compute a suite of vegetation indices: NDVI, NDWI, NBR, NBR2, TCW, TCG.
-These were then used, in combination with a suite of topographic information
-(elevation, slope, topographic solar radiation index, topographic position
-index, and a binary slope mask indicating flat pixels) from the Copernicus DEM
-product, to predict 30-m AGBD per 90-km tile. Estimates of mean AGBD and mean
-vegetation height with standard deviation are provided in cloud-optimized
-GeoTIFF (CoG) format. The product consists of a set of raster grids and tabular
-(CSV) files referenced to a set of 90-km tiles that cover the circumpolar boreal
-domain and south to 51.6°N (Figure 1). Each raster grid is a 2-band file where
-the first and second band represent the mean and standard deviation pixel values
-that result from the bootstrapped prediction. The CSV files feature the ICESat-2
-ATL08 30 m segment centroids that were used as training data in the prediction
-of each raster. A polygon map of these data tiles is included as a GeoPackage
-file and a Shapefile. This product was generated on the NASA-ESA Multi-Mission
-Algorithm and Analysis Platform (MAAP, https://scimaap.net), an open science
-platform. All code and input files are publicly available:
-[https://github.com/lauraduncanson/icesat2_boreal.git](https://repo.ops.maap-project.org/icesat2_boreal/icesat2_boreal.git).
-
-For each product (AGB and height) there are 3902 cloud-optimized GeoTIFFs, 3902 tables
-in comma-separated values (CSV) format, and 1 geopackage tile index."""
+These maps are compiled on a platform built for geoscience algorithm development and
+data processing that uses Amazon Web Services. This platform (the Multi-mission
+Algorithm and Analysis Platform; www.maap-project.org) is the result of an international
+partnership between NASA and the European Space Agency to promote and support science
+that is accessible, reproducible, and well-documented. This work is the result of a
+collaboration of a team of scientists and engineers from the University of
+Maryland-College Park, NASA Goddard Space Flight Center, the University of Texas-Austin,
+NASA Jet Propulsion Lab, and Development Seed. The primary funding source for this work
+came through NASA Terrestrial Ecology Program grants associated with NASA’s decade-long
+Arctic/Boreal Vulnerability Experiment (http://above.nasa.gov)"""
 
 COLLECTION_CITATION = """Duncanson, L., P.M. Montesano, A. Neuenschwander, A.
 Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A.
@@ -198,15 +161,46 @@ SUMMARIES = Summaries(
 
 KEYWORDS = ["BIOMASS", "VEGETATION HEIGHT"]
 
+
+def format_year_range(temporal_interval: List[datetime]) -> str:
+    """
+    Format a year range string from temporal intervals.
+
+    Args:
+        temporal_intervals: List of [start_datetime, end_datetime] pairs
+
+    Returns:
+        str: Year range string (e.g., "2020" or "2020-2024")
+    """
+
+    start_date, end_date = temporal_interval
+
+    start_year = start_date.year
+    end_year = end_date.year
+
+    if start_year == end_year:
+        return str(start_year)
+    else:
+        return f"{start_year}-{end_year}"
+
+
+COLLECTION_TITLE_PREFIX = (
+    "Circumpolar boreal forest structure from ICESat-2 & HLS "
+    f"({format_year_range(TEMPORAL_INTERVALS[0])} {VERSION})"
+)
 COLLECTION_TITLES = {
-    Variable.AGB: "ICESat-2 Boreal v2.1: Gridded Aboveground Biomass Density",
-    Variable.HT: "ICESat-2 Boreal v2.1: Vegetation Height",
+    Variable.AGB: f"{COLLECTION_TITLE_PREFIX}: 30m aboveground woody biomass density",
+    Variable.HT: f"{COLLECTION_TITLE_PREFIX}: 30m vegetation height",
 }
+
+TILE_GPKG_BUCKET = "nasa-maap-data-store"
+TILE_GPKG_KEY = "file-staging/nasa-map/boreal_tiles_v004.gpkg"
+TILE_GPKG_HREF = f"s3://{TILE_GPKG_BUCKET}/{TILE_GPKG_KEY}"
 
 COLLECTION_ASSETS = {
     Variable.AGB: {
         "tiles": Asset(
-            href="s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
+            href=TILE_GPKG_HREF,
             title="Processing tiles",
             description="90 km tile geometries for processing AGB predictions",
             media_type=MediaType.GEOPACKAGE,
@@ -215,7 +209,7 @@ COLLECTION_ASSETS = {
     },
     Variable.HT: {
         "tiles": Asset(
-            href="s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/ht/boreal_tiles_v004_HT_H30_2020_ORNLDAAC.gpkg",
+            href=TILE_GPKG_HREF,
             title="Processing tiles",
             description="90 km tile geometries for processing vegetation height "
             "predictions",
@@ -296,12 +290,37 @@ RENDERS = {
 }
 
 
+UNITS = {
+    Variable.AGB: "Mg ha-1",
+    Variable.HT: "m",
+}
+
 ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
     AssetType.COG: {
         "type": MediaType.COG,
         "roles": ["data"],
         "gsd": RESOLUTION,
         "processing:level": PROCESSING_LEVEL,
+        "bands": [
+            {
+                "name": "predicted",
+                "sampling": "area",
+                "nodata": "nan",
+                "scale": 1,
+                "offset": 0,
+                "data_type": "float32",
+                "spatial_resolution": RESOLUTION,
+            },
+            {
+                "name": "sd",
+                "sampling": "area",
+                "nodata": "nan",
+                "scale": 1,
+                "offset": 0,
+                "data_type": "float32",
+                "spatial_resolution": RESOLUTION,
+            },
+        ],
     },
     AssetType.TRAINING_DATA_CSV: {
         "type": CSV_MEDIA_TYPE,
@@ -310,40 +329,22 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
     },
 }
 
-# if using STAC v1.0.0, add raster and item-assets extensions
-raster_bands_key = (
-    "raster:bands"
-    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0")
-    else "bands"
-)
-
-ITEM_ASSET_PROPERTIES[AssetType.COG].update(
-    {
-        raster_bands_key: [
-            {
-                "sampling": "area",
-                "nodata": "nan",
-                "scale": 1,
-                "offset": 0,
-                "data_type": "float32",
-            },
-            {
-                "sampling": "area",
-                "nodata": "nan",
-                "scale": 1,
-                "offset": 0,
-                "data_type": "float32",
-            },
-        ],
-    }
-)
-
 ITEM_ASSETS = {
     variable: {
         asset_type: ItemAssetDefinition(
             {
                 **ITEM_ASSET_PROPERTIES[asset_type],
                 **TEXT[variable][asset_type],
+                **(
+                    {
+                        "bands": [
+                            {**band, "unit": UNITS[variable]}
+                            for band in ITEM_ASSET_PROPERTIES[asset_type]["bands"]
+                        ]
+                    }
+                    if asset_type == AssetType.COG
+                    else {}
+                ),
             }
         )
         for asset_type in AssetType

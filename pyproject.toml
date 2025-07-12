@@ -1,7 +1,8 @@
 [project]
-name = "icesat2-boreal-stac"
+name = "stactools-icesat2-boreal"
+version = "0.3.0"
 description = "Create STAC Items for icesat2-boreal data products"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
     {name = "Henry Rodman", email = "henry@developmentseed.com"},
     {name = "Emile Tenezakis", email = "emile@developmentseed.com"},
@@ -16,12 +17,10 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: GIS",
 ]
-dynamic = ["version"]
 dependencies = [
     "rio-stac",
     "pystac[validation]>=1.12.0",
-    "boto3",
-    "semver>=3.0.4",
+    "stactools",
 ]
 
 [dependency-groups]
@@ -41,20 +40,8 @@ dev = [
 "Bug Tracker" = "https://github.com/MAAP-Project/icesat2-boreal-stac/issues"
 
 [build-system]
-requires = ["flit>=3.2,<4"]
-build-backend = "flit_core.buildapi"
-
-[tool.flit.module]
-name = "icesat2_boreal_stac"
-
-[tool.flit.sdist]
-exclude = [
-    "tests/",
-    "docs/",
-    ".github/",
-    "CHANGES.md",
-    "CONTRIBUTING.md",
-]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.coverage.run]
 branch = true
@@ -84,7 +71,7 @@ line-length = 88
 indent-width = 4
 
 [tool.pytest.ini_options]
-addopts = "--cov=icesat2_boreal_stac --cov-report=term-missing --cov-report=xml -vv"
+addopts = "--cov=stactools.icesat2_boreal --cov-report=term-missing --cov-report=xml -vv"
 filterwarnings = [
     "ignore:datetime.datetime.utcnow\\(\\) is deprecated and scheduled for removal:DeprecationWarning"
 ]

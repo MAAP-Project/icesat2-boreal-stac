@@ -6,7 +6,7 @@ from pathlib import Path
 
 from pystac import CatalogType
 
-from icesat2_boreal_stac.stac import Variable, create_collection, create_item
+from stactools.icesat2_boreal.stac import Variable, create_collection, create_item
 
 root = Path(__file__).parents[1]
 examples = root / "examples"
@@ -15,21 +15,23 @@ if examples.exists():
     shutil.rmtree(examples)
     examples.mkdir()
 
-for variable, cog_key in [
+for variable, cog_key, csv_key in [
     (
         Variable.HT,
         "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/Ht_H30_2020/full_run/2025/01/13/09/01/49/694207/boreal_ht_2020_202501131736787421_0000004.tif",
+        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/Ht_H30_2020/full_run/2025/01/13/09/01/49/694207/boreal_ht_2020_202501131736787421_0000004_train_data.csv",
     ),
     (
         Variable.AGB,
         "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004.tif",
+        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004_train_data.csv",
     ),
 ]:
     variable_dir = examples / variable.value
     variable_dir.mkdir()
 
     collection = create_collection(variable)
-    item = create_item(cog_key)
+    item = create_item(cog_key, csv_key)
     collection.add_item(item)
 
     collection.normalize_hrefs(str(variable_dir))

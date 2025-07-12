@@ -3,11 +3,9 @@
 import os
 import re
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
 import rasterio
 import rio_stac
-import semver
 from dateutil.relativedelta import relativedelta
 from pystac import (
     Collection,
@@ -16,13 +14,12 @@ from pystac import (
     Link,
     SpatialExtent,
     TemporalExtent,
-    get_stac_version,
 )
 from pystac.extensions.render import RenderExtension
 from pystac.extensions.version import VersionRelType
 from rio_stac.stac import get_raster_info
 
-from icesat2_boreal_stac.constants import (
+from stactools.icesat2_boreal.constants import (
     BBOX,
     COLLECTION_ASSETS,
     COLLECTION_CITATION,
@@ -40,7 +37,6 @@ from icesat2_boreal_stac.constants import (
     AssetType,
     Variable,
 )
-from icesat2_boreal_stac.s3 import cog_key_to_asset_keys
 
 # specific text fields for each variable/asset
 
@@ -89,20 +85,18 @@ def create_collection(variable: Variable) -> Collection:
         )
     )
 
+    collection.add_link(
+        Link(
+            rel=VersionRelType.PREDECESSOR,
+            target=f"https://stac.maap-project.org/collections/icesat2-boreal-v2.1-{variable}",
+            title="Previous version",
+        )
+    )
+
     # add some extensions by hand
     collection.stac_extensions.append(
         "https://stac-extensions.github.io/processing/v1.2.0/schema.json",
     )
-
-    # if using STAC v1.0.0, add raster and item-assets extensions
-    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
-        collection.ext.add("item_assets")
-        collection.stac_extensions.append(
-            "https://stac-extensions.github.io/raster/v1.1.0/schema.json",
-        )
-        collection.item_assets[AssetType.COG].properties["raster:bands"] = (
-            collection.item_assets[AssetType.COG].properties.pop("bands")
-        )
 
     # add render extension
     collection.ext.add("render")
@@ -117,10 +111,9 @@ def create_collection(variable: Variable) -> Collection:
     return collection
 
 
-def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
+def create_item(cog_key: str, csv_key: str) -> Item:
     """Create a STAC item given the S3 key for a COG"""
-    asset_keys = cog_key_to_asset_keys(cog_key, copy_to)
-    cog_key = asset_keys[AssetType.COG]
+    asset_keys = {AssetType.COG: cog_key, AssetType.TRAINING_DATA_CSV: csv_key}
 
     item_id = os.path.splitext(os.path.basename(cog_key))[0]
 
@@ -131,15 +124,16 @@ def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
     collection_id = COLLECTION_ID_FORMAT.format(
         version=VERSION, variable=variable.value
     )
-    created_datetime = datetime.strptime(id_parts[3][:8], "%Y%M%d")
+    created_datetime = datetime.strptime(id_parts[3][:8], "%Y%m%d")
     item_start_datetime = datetime.strptime(id_parts[2], "%Y")
     item_end_datetime = (
         item_start_datetime + relativedelta(years=1) - timedelta(seconds=1)
     )
 
     # generate dictionary of assets
+    collection_item_assets = ITEM_ASSETS[variable]
     item_assets = {
-        asset: ITEM_ASSETS[variable][asset].create_asset(key)
+        str(asset): collection_item_assets[asset].create_asset(key).clone()
         for asset, key in asset_keys.items()
     }
 
@@ -166,19 +160,11 @@ def create_item(cog_key: str, copy_to: Optional[str] = None) -> Item:
         with_proj=True,
     )
 
-    # retrieve the raster info separately
-    if semver.Version.parse(get_stac_version()) <= semver.Version.parse("1.0.0"):
-        item.stac_extensions.append(
-            "https://stac-extensions.github.io/raster/v1.1.0/schema.json"
-        )
-        band_property = "raster:bands"
-    else:
-        band_property = "bands"
-
     with rasterio.open(cog_key) as src:
-        raster_info = {band_property: get_raster_info(src, max_size=3000)}
+        raster_info = get_raster_info(src, max_size=3000)
 
-    item.assets[AssetType.COG].extra_fields.update(**raster_info)
+    for i, band in enumerate(raster_info):
+        item.assets[AssetType.COG].extra_fields["bands"][i].update(band)
 
     item.validate()
 
