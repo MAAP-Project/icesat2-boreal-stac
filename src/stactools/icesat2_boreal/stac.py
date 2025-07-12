@@ -85,6 +85,14 @@ def create_collection(variable: Variable) -> Collection:
         )
     )
 
+    collection.add_link(
+        Link(
+            rel=VersionRelType.PREDECESSOR,
+            target=f"https://stac.maap-project.org/collections/icesat2-boreal-v2.1-{variable}",
+            title="Previous version",
+        )
+    )
+
     # add some extensions by hand
     collection.stac_extensions.append(
         "https://stac-extensions.github.io/processing/v1.2.0/schema.json",

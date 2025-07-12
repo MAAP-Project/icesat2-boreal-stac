@@ -22,6 +22,11 @@
       "title": "Previous version"
     },
     {
+      "rel": "predecessor-version",
+      "href": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb",
+      "title": "Previous version"
+    },
+    {
       "rel": "item",
       "href": "./boreal_agb_2020_202411251732556086_0000004/boreal_agb_2020_202411251732556086_0000004.json",
       "type": "application/geo+json"
@@ -179,7 +184,7 @@
   },
   "assets": {
     "tiles": {
-      "href": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
+      "href": "s3://nasa-maap-data-store/file-staging/nasa-map/boreal_tiles_v004.gpkg",
       "type": "application/geopackage+sqlite3",
       "title": "Processing tiles",
       "description": "90 km tile geometries for processing AGB predictions",
