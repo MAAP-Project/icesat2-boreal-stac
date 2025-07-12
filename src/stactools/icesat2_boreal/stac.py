@@ -81,7 +81,7 @@ def create_collection(variable: Variable) -> Collection:
         Link(
             rel=VersionRelType.PREDECESSOR,
             target="https://stac.maap-project.org/collections/icesat2-boreal",
-            title="Previous version",
+            title="Previous version (v1.0)",
         )
     )
 
@@ -89,7 +89,7 @@ def create_collection(variable: Variable) -> Collection:
         Link(
             rel=VersionRelType.PREDECESSOR,
             target=f"https://stac.maap-project.org/collections/icesat2-boreal-v2.1-{variable}",
-            title="Previous version",
+            title="Previous version (v2.1)",
         )
     )
 

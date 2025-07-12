@@ -19,12 +19,12 @@
     {
       "rel": "predecessor-version",
       "href": "https://stac.maap-project.org/collections/icesat2-boreal",
-      "title": "Previous version"
+      "title": "Previous version (v1.0)"
     },
     {
       "rel": "predecessor-version",
       "href": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb",
-      "title": "Previous version"
+      "title": "Previous version (v2.1)"
     },
     {
       "rel": "item",
