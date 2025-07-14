@@ -197,17 +197,33 @@ TILE_GPKG_BUCKET = "nasa-maap-data-store"
 TILE_GPKG_KEY = "file-staging/nasa-map/boreal_tiles_v004.gpkg"
 TILE_GPKG_HREF = f"s3://{TILE_GPKG_BUCKET}/{TILE_GPKG_KEY}"
 
+THUMBNAIL_HREF_FORMAT = "https://raw.githubusercontent.com/MAAP-Project/icesat2-boreal-stac/refs/heads/main/assets/{variable}.png"
+
 COLLECTION_ASSETS = {
     Variable.AGB: {
+        "thumbnail": Asset(
+            href=THUMBNAIL_HREF_FORMAT.format(variable=Variable.AGB),
+            media_type=MediaType.PNG,
+            roles=["thumbnail"],
+            title="Thumbnail",
+            description="Circumpolar view of model predictions",
+        ),
         "tiles": Asset(
             href=TILE_GPKG_HREF,
             title="Processing tiles",
             description="90 km tile geometries for processing AGB predictions",
             media_type=MediaType.GEOPACKAGE,
             roles=["metadata"],
-        )
+        ),
     },
     Variable.HT: {
+        "thumbnail": Asset(
+            href=THUMBNAIL_HREF_FORMAT.format(variable=Variable.HT),
+            media_type=MediaType.PNG,
+            roles=["thumbnail"],
+            title="Thumbnail",
+            description="Circumpolar view of model predictions",
+        ),
         "tiles": Asset(
             href=TILE_GPKG_HREF,
             title="Processing tiles",
@@ -215,7 +231,7 @@ COLLECTION_ASSETS = {
             "predictions",
             media_type=MediaType.GEOPACKAGE,
             roles=["metadata"],
-        )
+        ),
     },
 }
 

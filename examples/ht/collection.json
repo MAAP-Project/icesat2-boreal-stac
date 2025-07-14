@@ -164,6 +164,15 @@
     }
   },
   "assets": {
+    "thumbnail": {
+      "href": "https://raw.githubusercontent.com/MAAP-Project/icesat2-boreal-stac/refs/heads/main/assets/ht.png",
+      "type": "image/png",
+      "title": "Thumbnail",
+      "description": "Circumpolar view of model predictions",
+      "roles": [
+        "thumbnail"
+      ]
+    },
     "tiles": {
       "href": "s3://nasa-maap-data-store/file-staging/nasa-map/boreal_tiles_v004.gpkg",
       "type": "application/geopackage+sqlite3",
