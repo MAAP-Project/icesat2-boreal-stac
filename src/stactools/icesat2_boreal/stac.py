@@ -1,5 +1,7 @@
 """STAC metadata methods for icesat2-boreal collections"""
 
+import importlib.resources as pkg_resources
+import json
 import os
 import re
 from datetime import datetime, timedelta, timezone
@@ -121,6 +123,8 @@ def create_item(cog_key: str, csv_key: str) -> Item:
     id_parts = item_id.split("_")
 
     variable = Variable(id_parts[1])
+    tile_id = id_parts[-1]
+
     collection_id = COLLECTION_ID_FORMAT.format(
         version=VERSION, variable=variable.value
     )
@@ -137,6 +141,9 @@ def create_item(cog_key: str, csv_key: str) -> Item:
         for asset, key in asset_keys.items()
     }
 
+    with pkg_resources.open_text("stactools.icesat2_boreal", "daac-tiles.json") as f:
+        daac_tiles = json.load(f)
+
     item = rio_stac.create_stac_item(
         source=asset_keys[AssetType.COG],
         collection=collection_id,
@@ -152,6 +159,8 @@ def create_item(cog_key: str, csv_key: str) -> Item:
             "created_datetime": created_datetime.replace(
                 tzinfo=timezone.utc
             ).isoformat(),
+            "icesat2-boreal:tile_id": tile_id,
+            "icesat2-boreal:in_daac": tile_id in daac_tiles,
         },
         assets=item_assets,
         # skip with_raster because when assets is specified, raster info does not get

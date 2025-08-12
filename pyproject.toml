@@ -1,6 +1,6 @@
 [project]
 name = "stactools-icesat2-boreal"
-version = "0.3.0"
+version = "0.3.3"
 description = "Create STAC Items for icesat2-boreal data products"
 requires-python = ">=3.11"
 authors = [
@@ -42,6 +42,9 @@ dev = [
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+"stactools.icesat2_boreal" = ["daac-tiles.json"]
 
 [tool.coverage.run]
 branch = true

@@ -42,6 +42,8 @@
     "start_datetime": "2020-01-01T00:00:00+00:00",
     "end_datetime": "2020-12-31T23:59:59+00:00",
     "created_datetime": "2025-01-13T00:00:00+00:00",
+    "icesat2-boreal:tile_id": "0000004",
+    "icesat2-boreal:in_daac": true,
     "proj:epsg": null,
     "proj:geometry": {
       "type": "Polygon",
