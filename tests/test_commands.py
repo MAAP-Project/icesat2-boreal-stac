@@ -21,7 +21,7 @@ def test_create_collection(tmp_path: Path) -> None:
     collection.validate()
 
 
-def test_create_item(tmp_path: Path, cog_key: str) -> None:
+def test_create_item(tmp_path: Path, cog_key_in_daac: str) -> None:
     """Test create item cli"""
     # Smoke test for the command line create-item command
     #
@@ -29,7 +29,7 @@ def test_create_item(tmp_path: Path, cog_key: str) -> None:
     path = str(tmp_path / "item.json")
     runner = CliRunner()
     result = runner.invoke(
-        command, ["create-item", cog_key, "/path/to/train_data.csv", path]
+        command, ["create-item", cog_key_in_daac, "/path/to/train_data.csv", path]
     )
     assert result.exit_code == 0, "\n{}".format(result.output)
     item = Item.from_file(path)

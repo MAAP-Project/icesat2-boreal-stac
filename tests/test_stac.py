@@ -1,6 +1,5 @@
 """Tests for STAC metadata"""
 
-import os
 from datetime import datetime, timezone
 
 import pytest
@@ -12,16 +11,10 @@ from stactools.icesat2_boreal.stac import (
     create_item,
 )
 
-cog_key = (
-    "file://"
-    + os.path.dirname(__file__)
-    + "/data/boreal_ht_2020_202501131736787421_0000004.tif"
-)
 
-
-def test_create_item(cog_key: str) -> None:
+def test_create_item_in_daac(cog_key_in_daac: str) -> None:
     """Test STAC item creation"""
-    item = create_item(cog_key, "file://training_data.csv")
+    item = create_item(cog_key_in_daac, "file://training_data.csv")
     item.validate()
     assert item.id == "boreal_ht_2020_202501131736787421_0000004"
     assert (
@@ -36,6 +29,14 @@ def test_create_item(cog_key: str) -> None:
     assert not item.ext.has("raster")
 
     assert item.assets.get("cog")
+
+
+def test_create_item_not_in_daac(cog_key_not_in_daac: str) -> None:
+    """Test STAC item creation"""
+    item = create_item(cog_key_not_in_daac, "file://training_data.csv")
+    item.validate()
+    assert item.id == "boreal_ht_2020_202501131736787421_0000003"
+    assert not item.properties["icesat2-boreal:in_daac"]
 
 
 @pytest.mark.parametrize("variable", list(Variable))
