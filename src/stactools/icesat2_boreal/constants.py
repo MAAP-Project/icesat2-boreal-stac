@@ -124,7 +124,7 @@ PROVIDERS = [
     ),
     Provider(
         name="NASA/GSFC",
-        description="Goddard Space Flight Center",
+        description="Goddard Space Flight Center, NASA",
         url="https://gsfc.nasa.gov",
         roles=[ProviderRole.PRODUCER, ProviderRole.LICENSOR],
     ),
