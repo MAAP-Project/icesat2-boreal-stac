@@ -146,14 +146,39 @@
   "license": "CC-BY",
   "providers": [
     {
-      "name": "MAAP",
-      "description": "The MAAP platform is designed to combine data, algorithms, and computational abilities for the processing and sharing of data related to NASA\u2019s GEDI, ESA\u2019s BIOMASS, and NASA/ISRO\u2019s NISAR missions",
+      "name": "UMD/GEOG",
+      "description": "Department of Geographical Sciences, University of Maryland",
+      "roles": [
+        "producer",
+        "licensor"
+      ],
+      "url": "https://geog.umd.edu/"
+    },
+    {
+      "name": "NASA/GSFC",
+      "description": "Goddard Space Flight Center",
+      "roles": [
+        "producer",
+        "licensor"
+      ],
+      "url": "https://gsfc.nasa.gov"
+    },
+    {
+      "name": "UTX-AUSTIN/CSR",
+      "description": "Center for Space Research, University of Texas at Austin",
+      "roles": [
+        "producer",
+        "licensor"
+      ],
+      "url": "http://www.csr.utexas.edu/"
+    },
+    {
+      "name": "NASA/MAAP",
+      "description": "The ESA-NASA Multi-Mission Algorithm and Analysis Platform",
       "roles": [
         "processor",
-        "producer",
         "host"
       ],
-      "url": "https://maap-project.org",
       "processing:level": "L4"
     }
   ],
