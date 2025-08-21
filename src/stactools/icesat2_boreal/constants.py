@@ -117,18 +117,32 @@ PROCESSING_LEVEL = "L4"
 
 PROVIDERS = [
     Provider(
-        name="MAAP",
-        description="The MAAP platform is designed to combine data, algorithms, and "
-        "computational abilities for the processing and sharing of data related to "
-        "NASA’s GEDI, ESA’s BIOMASS, and NASA/ISRO’s NISAR missions",
-        url="https://maap-project.org",
+        name="UMD/GEOG",
+        description="Department of Geographical Sciences, University of Maryland",
+        url="https://geog.umd.edu/",
+        roles=[ProviderRole.PRODUCER, ProviderRole.LICENSOR],
+    ),
+    Provider(
+        name="NASA/GSFC",
+        description="Goddard Space Flight Center, NASA",
+        url="https://gsfc.nasa.gov",
+        roles=[ProviderRole.PRODUCER, ProviderRole.LICENSOR],
+    ),
+    Provider(
+        name="UTX-AUSTIN/CSR",
+        description="Center for Space Research, University of Texas at Austin",
+        url="http://www.csr.utexas.edu/",
+        roles=[ProviderRole.PRODUCER, ProviderRole.LICENSOR],
+    ),
+    Provider(
+        name="NASA/MAAP",
+        description="The ESA-NASA Multi-Mission Algorithm and Analysis Platform",
         roles=[
             ProviderRole.PROCESSOR,
-            ProviderRole.PRODUCER,
             ProviderRole.HOST,
         ],
         extra_fields={"processing:level": PROCESSING_LEVEL},
-    )
+    ),
 ]
 
 SUMMARIES = Summaries(
