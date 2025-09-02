@@ -79,21 +79,19 @@ def create_collection(variable: Variable) -> Collection:
     collection.ext.version.version = VERSION
     collection.ext.version.deprecated = False
 
-    collection.add_link(
-        Link(
-            rel=VersionRelType.PREDECESSOR,
-            target="https://stac.maap-project.org/collections/icesat2-boreal",
-            title="Previous version (v1.0)",
+    for version in ["v1.0", "v2.1", "v3.0"]:
+        old_id = (
+            "icesat2-boreal"
+            if version == "v1.0"
+            else f"icesat2-boreal-{version}-{variable}"
         )
-    )
-
-    collection.add_link(
-        Link(
-            rel=VersionRelType.PREDECESSOR,
-            target=f"https://stac.maap-project.org/collections/icesat2-boreal-v2.1-{variable}",
-            title="Previous version (v2.1)",
+        collection.add_link(
+            Link(
+                rel=VersionRelType.PREDECESSOR,
+                target=f"https://stac.maap-project.org/collections/{old_id}",
+                title=f"Previous version ({version})",
+            )
         )
-    )
 
     # add some extensions by hand
     collection.stac_extensions.append(

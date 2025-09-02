@@ -48,7 +48,7 @@ class AssetType(StrEnum):
         return {member.value for member in cls}
 
 
-VERSION = "v3.0"
+VERSION = "v3.1"
 COLLECTION_ID_FORMAT = "icesat2-boreal-{version}-{variable}"
 
 CSV_MEDIA_TYPE = "text/csv"
