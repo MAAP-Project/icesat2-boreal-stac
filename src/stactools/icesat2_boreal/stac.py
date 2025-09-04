@@ -111,9 +111,9 @@ def create_collection(variable: Variable) -> Collection:
     return collection
 
 
-def create_item(cog_key: str, csv_key: str) -> Item:
+def create_item(cog_key: str, parquet_key: str) -> Item:
     """Create a STAC item given the S3 key for a COG"""
-    asset_keys = {AssetType.COG: cog_key, AssetType.TRAINING_DATA_CSV: csv_key}
+    asset_keys = {AssetType.COG: cog_key, AssetType.TRAINING_DATA_PARQUET: parquet_key}
 
     item_id = os.path.splitext(os.path.basename(cog_key))[0]
 

@@ -33,7 +33,7 @@
     },
     {
       "rel": "item",
-      "href": "./boreal_ht_2020_202501131736787421_0000004/boreal_ht_2020_202501131736787421_0000004.json",
+      "href": "./boreal_ht_2020_202508201755722400_0003543/boreal_ht_2020_202508201755722400_0003543.json",
       "type": "application/geo+json"
     }
   ],
@@ -76,8 +76,8 @@
       "title": "Gridded predictions of vegetation height (m)",
       "description": "Gridded predictions of vegetation height (m)"
     },
-    "training_data_csv": {
-      "type": "text/csv",
+    "training_data_parquet": {
+      "type": "application/x-parquet",
       "roles": [
         "data"
       ],

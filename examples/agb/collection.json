@@ -33,7 +33,7 @@
     },
     {
       "rel": "item",
-      "href": "./boreal_agb_2020_202411251732556086_0000004/boreal_agb_2020_202411251732556086_0000004.json",
+      "href": "./boreal_agb_2020_202508191755618683_0036023/boreal_agb_2020_202508191755618683_0036023.json",
       "type": "application/geo+json"
     }
   ],
@@ -76,8 +76,8 @@
       "title": "Gridded predictions of aboveground biomass (Mg/ha)",
       "description": "Gridded predictions of aboveground biomass (Mg/ha)"
     },
-    "training_data_csv": {
-      "type": "text/csv",
+    "training_data_parquet": {
+      "type": "application/x-parquet",
       "roles": [
         "data"
       ],

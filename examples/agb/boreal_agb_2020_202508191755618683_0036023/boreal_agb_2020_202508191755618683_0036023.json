@@ -4,79 +4,79 @@
   "stac_extensions": [
     "https://stac-extensions.github.io/projection/v1.1.0/schema.json"
   ],
-  "id": "boreal_agb_2020_202411251732556086_0000004",
+  "id": "boreal_agb_2020_202508191755618683_0036023",
   "geometry": {
     "type": "Polygon",
     "coordinates": [
       [
         [
-          8.748942733447695,
-          57.14696993683849
+          -77.56074233033688,
+          40.43966584629357
         ],
         [
-          7.483984605164516,
-          57.586106963239565
+          -77.51420879839165,
+          39.6052128798014
         ],
         [
-          6.672362303301861,
-          56.91323098125322
+          -76.49931135579585,
+          39.63666319998007
         ],
         [
-          7.9237289872292616,
-          56.48186687643973
+          -76.53029948213917,
+          40.47149736235484
         ],
         [
-          8.748942733447695,
-          57.14696993683849
+          -77.56074233033688,
+          40.43966584629357
         ]
       ]
     ]
   },
   "bbox": [
-    6.672362303301861,
-    56.48186687643973,
-    8.748942733447695,
-    57.586106963239565
+    -77.56074233033688,
+    39.6052128798014,
+    -76.49931135579585,
+    40.47149736235484
   ],
   "properties": {
     "start_datetime": "2020-01-01T00:00:00+00:00",
     "end_datetime": "2020-12-31T23:59:59+00:00",
-    "created_datetime": "2024-11-25T00:00:00+00:00",
-    "icesat2-boreal:tile_id": "0000004",
-    "icesat2-boreal:in_daac": true,
+    "created_datetime": "2025-08-19T00:00:00+00:00",
+    "icesat2-boreal:tile_id": "0036023",
+    "icesat2-boreal:in_daac": false,
     "proj:epsg": null,
     "proj:geometry": {
       "type": "Polygon",
       "coordinates": [
         [
           [
-            -2241478.0000000047,
-            9243304.00000001
+            5858521.999999994,
+            5643304.000000009
           ],
           [
-            -2151478.0000000047,
-            9243304.00000001
+            5948521.999999994,
+            5643304.000000009
           ],
           [
-            -2151478.0000000047,
-            9333304.00000001
+            5948521.999999994,
+            5733304.000000009
           ],
           [
-            -2241478.0000000047,
-            9333304.00000001
+            5858521.999999994,
+            5733304.000000009
           ],
           [
-            -2241478.0000000047,
-            9243304.00000001
+            5858521.999999994,
+            5643304.000000009
           ]
         ]
       ]
     },
     "proj:bbox": [
-      -2241478.0000000047,
-      9243304.00000001,
-      -2151478.0000000047,
-      9333304.00000001
+      5858521.999999994,
+      5643304.000000009,
+      5948521.999999994,
+      5733304.000000009
     ],
     "proj:shape": [
       3000,
@@ -85,10 +85,10 @@
     "proj:transform": [
       30.0,
       0.0,
-      -2241478.0000000047,
+      5858521.999999994,
       0.0,
       -30.0,
-      9333304.00000001,
+      5733304.000000009,
       0.0,
       0.0,
       1.0
@@ -118,7 +118,7 @@
   ],
   "assets": {
     "cog": {
-      "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004.tif",
+      "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/v3.1.0/AGB_H30_2020/full_run/2025/08/19/09/59/01/262274/boreal_agb_2020_202508191755618683_0036023.tif",
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
       "title": "Gridded predictions of aboveground biomass (Mg/ha)",
       "description": "Gridded predictions of aboveground biomass (Mg/ha)",
@@ -128,68 +128,68 @@
         {
           "name": "predicted",
           "sampling": "area",
-          "nodata": "nan",
+          "nodata": -9999.0,
           "scale": 1.0,
           "offset": 0.0,
           "data_type": "float32",
           "spatial_resolution": 30,
           "unit": "Mg ha-1",
           "statistics": {
-            "mean": 25.231708351145954,
-            "minimum": 0.7163138389587402,
-            "maximum": 205.04116821289062,
-            "stddev": 25.423447464575105,
-            "valid_percent": 3.144877777777778
+            "mean": 86.33986927180231,
+            "minimum": 1.7889511585235596,
+            "maximum": 274.7066650390625,
+            "stddev": 62.387047719362045,
+            "valid_percent": 94.27873333333334
           },
           "histogram": {
             "count": 11,
-            "min": 0.7163138389587402,
-            "max": 205.04116821289062,
+            "min": 1.7889511585235596,
+            "max": 274.7066650390625,
             "buckets": [
-              179356,
-              50533,
-              23795,
-              15292,
-              8521,
-              3862,
-              1256,
-              357,
-              57,
-              10
+              2313300,
+              1417584,
+              707538,
+              674651,
+              1047350,
+              1236118,
+              770319,
+              266497,
+              48474,
+              3255
             ]
           }
         },
         {
           "name": "sd",
           "sampling": "area",
-          "nodata": "nan",
+          "nodata": -9999.0,
           "scale": 1.0,
           "offset": 0.0,
           "data_type": "float32",
           "spatial_resolution": 30,
           "unit": "Mg ha-1",
           "statistics": {
-            "mean": 6.358231551128997,
-            "minimum": 0.6042453646659851,
-            "maximum": 51.516971588134766,
-            "stddev": 4.209226065753964,
-            "valid_percent": 3.144877777777778
+            "mean": 11.970605365696942,
+            "minimum": 0.7107511758804321,
+            "maximum": 69.44338989257812,
+            "stddev": 5.245244035639253,
+            "valid_percent": 94.27873333333334
           },
           "histogram": {
             "count": 11,
-            "min": 0.6042453646659851,
-            "max": 51.516971588134766,
+            "min": 0.7107511758804321,
+            "max": 69.44338989257812,
             "buckets": [
-              158614,
-              84508,
-              28684,
-              9201,
-              1717,
-              243,
-              43,
-              15,
-              12,
-              2
+              2012498,
+              3687603,
+              2516658,
+              212242,
+              40361,
+              15612,
+              84,
+              21,
+              6,
+              1
             ]
           }
         }
@@ -198,9 +198,9 @@
         "data"
       ]
     },
-    "training_data_csv": {
-      "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004_train_data.csv",
-      "type": "text/csv",
+    "training_data_parquet": {
+      "href": "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/v3.1.0/AGB_H30_2020/full_run/2025/08/19/09/59/01/262274/boreal_agb_2020_202508191755618683_0036023_train.parquet",
+      "type": "application/x-parquet",
       "title": "Tabular training data",
       "description": "Tabular training data with latitude, longitude, and biomass observations",
       "roles": [
