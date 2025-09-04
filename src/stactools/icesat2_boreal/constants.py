@@ -324,6 +324,11 @@ UNITS = {
     Variable.HT: "m",
 }
 
+LAYER_NAME_SUFFIXES = {
+    Variable.AGB: "agbd",
+    Variable.HT: "ht",
+}
+
 ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
     AssetType.COG: {
         "type": MediaType.COG,
@@ -332,7 +337,6 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
         "processing:level": PROCESSING_LEVEL,
         "bands": [
             {
-                "name": "predicted",
                 "sampling": "area",
                 "nodata": "nan",
                 "scale": 1,
@@ -341,7 +345,6 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
                 "spatial_resolution": RESOLUTION,
             },
             {
-                "name": "sd",
                 "sampling": "area",
                 "nodata": "nan",
                 "scale": 1,
@@ -358,6 +361,8 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
     },
 }
 
+LAYER_NAMES = ["mean_{label}", "std_{label}"]
+
 ITEM_ASSETS = {
     variable: {
         asset_type: ItemAssetDefinition(
@@ -367,8 +372,18 @@ ITEM_ASSETS = {
                 **(
                     {
                         "bands": [
-                            {**band, "unit": UNITS[variable]}
-                            for band in ITEM_ASSET_PROPERTIES[asset_type]["bands"]
+                            {
+                                "name": layer_name.format(
+                                    label=LAYER_NAME_SUFFIXES[variable]
+                                ),
+                                "unit": UNITS[variable],
+                                **band,
+                            }
+                            for band, layer_name in zip(
+                                ITEM_ASSET_PROPERTIES[asset_type]["bands"],
+                                LAYER_NAMES,
+                                strict=False,
+                            )
                         ]
                     }
                     if asset_type == AssetType.COG

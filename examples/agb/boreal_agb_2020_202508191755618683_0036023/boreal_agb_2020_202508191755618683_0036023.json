@@ -126,14 +126,14 @@
       "processing:level": "L4",
       "bands": [
         {
-          "name": "predicted",
+          "name": "mean_agbd",
+          "unit": "Mg ha-1",
           "sampling": "area",
           "nodata": -9999.0,
           "scale": 1.0,
           "offset": 0.0,
           "data_type": "float32",
           "spatial_resolution": 30,
-          "unit": "Mg ha-1",
           "statistics": {
             "mean": 86.33986927180231,
             "minimum": 1.7889511585235596,
@@ -160,14 +160,14 @@
           }
         },
         {
-          "name": "sd",
+          "name": "std_agbd",
+          "unit": "Mg ha-1",
           "sampling": "area",
           "nodata": -9999.0,
           "scale": 1.0,
           "offset": 0.0,
           "data_type": "float32",
           "spatial_resolution": 30,
-          "unit": "Mg ha-1",
           "statistics": {
             "mean": 11.970605365696942,
             "minimum": 0.7107511758804321,
