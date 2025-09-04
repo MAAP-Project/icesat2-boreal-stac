@@ -15,23 +15,23 @@ if examples.exists():
     shutil.rmtree(examples)
     examples.mkdir()
 
-for variable, cog_key, csv_key in [
+for variable, cog_key, parquet_key in [
     (
         Variable.HT,
-        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/Ht_H30_2020/full_run/2025/01/13/09/01/49/694207/boreal_ht_2020_202501131736787421_0000004.tif",
-        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/Ht_H30_2020/full_run/2025/01/13/09/01/49/694207/boreal_ht_2020_202501131736787421_0000004_train_data.csv",
+        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/v3.1.0/Ht_H30_2020/full_run/2025/08/20/14/01/56/204100/boreal_ht_2020_202508201755722400_0003543.tif",
+        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/v3.1.0/Ht_H30_2020/full_run/2025/08/20/14/01/56/204100/boreal_ht_2020_202508201755722400_0003543_train.parquet",
     ),
     (
         Variable.AGB,
-        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004.tif",
-        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/09/38/51/560230/boreal_agb_2020_202411251732556086_0000004_train_data.csv",
+        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/v3.1.0/AGB_H30_2020/full_run/2025/08/19/09/59/01/262274/boreal_agb_2020_202508191755618683_0036023.tif",
+        "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/v3.1.0/AGB_H30_2020/full_run/2025/08/19/09/59/01/262274/boreal_agb_2020_202508191755618683_0036023_train.parquet",
     ),
 ]:
     variable_dir = examples / variable.value
     variable_dir.mkdir()
 
     collection = create_collection(variable)
-    item = create_item(cog_key, csv_key)
+    item = create_item(cog_key, parquet_key)
     collection.add_item(item)
 
     collection.normalize_hrefs(str(variable_dir))

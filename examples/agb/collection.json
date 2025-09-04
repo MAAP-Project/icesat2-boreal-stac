@@ -1,6 +1,6 @@
 {
   "type": "Collection",
-  "id": "icesat2-boreal-v3.0-agb",
+  "id": "icesat2-boreal-v3.1-agb",
   "stac_version": "1.1.0",
   "description": "This dataset provides predictions of woody aboveground biomass density (AGBD) and vegetation height for high northern latitude forests at 30 m spatial resolution for the year 2020, accounting for >30% of global forest area.\n\nMaps of woody AGBD and height are essential for understanding patterns of forest structure, including the mass of forest vegetation, its carbon content, and its vertical and horizontal arrangement across managed and unmanaged landscapes. These maps are optimized to visualize these patterns, monitor forest conditions, and manage forest carbon stocks and their changes. The information contained in these maps provides insights into the current conditions and shifts in a global biome that is shaped by natural processes that play out across decades to millennia, as well as human decisions, and whose status and functioning affects wildlife, the climate, economies, and the wellbeing of public and private sector stakeholders both within and outside of the north.\n\nThese maps are built with state-of-the-art earth observation datasets collected from space, including lidar observations from NASA\u2019s ICESat-2 and imagery from NASA\u2019s Harmonized Landsat/Sentinel-2 project. They are designed for circumpolar boreal-wide mapping from local to global scales and provide the northern component of global forest structure estimates, to which complementary estimates from NASA's Global Ecosystem Dynamics Investigation (GEDI) mission contribute temperate and tropical portions. The AGBD and height predictions cover the extent of high latitude boreal forests and shrublands, and while they extend southward outside the boreal domain nominally to ~50\u00b0N they are intended to contribute to global estimates northward from 51.6\u00b0N.\n\nThe compilation of these maps is a final value-added step made possible by decades of investment coupled with world-class expertise from the US Government into engineering, space, and earth science. With this long-term investment, NASA and its federal (USGS, NOAA), international, and private sector partners have conceived of, tested, built, launched, collected and processed data from, and maintained a constellation of, earth observation satellites that provide the fundamental measurements used to build these maps.\n\nThese maps are compiled on a platform built for geoscience algorithm development and data processing that uses Amazon Web Services. This platform (the Multi-mission Algorithm and Analysis Platform; www.maap-project.org) is the result of an international partnership between NASA and the European Space Agency to promote and support science that is accessible, reproducible, and well-documented. This work is the result of a collaboration of a team of scientists and engineers from the University of Maryland-College Park, NASA Goddard Space Flight Center, the University of Texas-Austin, NASA Jet Propulsion Lab, and Development Seed. The primary funding source for this work came through NASA Terrestrial Ecology Program grants associated with NASA\u2019s decade-long Arctic/Boreal Vulnerability Experiment (http://above.nasa.gov)",
   "links": [
@@ -8,7 +8,7 @@
       "rel": "root",
       "href": "./collection.json",
       "type": "application/json",
-      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density"
+      "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.1): 30m aboveground woody biomass density"
     },
     {
       "rel": "about",
@@ -27,8 +27,13 @@
       "title": "Previous version (v2.1)"
     },
     {
+      "rel": "predecessor-version",
+      "href": "https://stac.maap-project.org/collections/icesat2-boreal-v3.0-agb",
+      "title": "Previous version (v3.0)"
+    },
+    {
       "rel": "item",
-      "href": "./boreal_agb_2020_202411251732556086_0000004/boreal_agb_2020_202411251732556086_0000004.json",
+      "href": "./boreal_agb_2020_202508191755618683_0036023/boreal_agb_2020_202508191755618683_0036023.json",
       "type": "application/geo+json"
     }
   ],
@@ -71,8 +76,8 @@
       "title": "Gridded predictions of aboveground biomass (Mg/ha)",
       "description": "Gridded predictions of aboveground biomass (Mg/ha)"
     },
-    "training_data_csv": {
-      "type": "text/csv",
+    "training_data_parquet": {
+      "type": "application/x-parquet",
       "roles": [
         "data"
       ],
@@ -80,7 +85,7 @@
       "description": "Tabular training data with latitude, longitude, and biomass observations"
     }
   },
-  "version": "v3.0",
+  "version": "v3.1",
   "deprecated": false,
   "renders": {
     "agb_viridis": {
@@ -122,7 +127,7 @@
     }
   },
   "sci:citation": "Duncanson, L., P.M. Montesano, A. Neuenschwander, A. Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A. Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)",
-  "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.0): 30m aboveground woody biomass density",
+  "title": "Circumpolar boreal forest structure from ICESat-2 & HLS (2020 v3.1): 30m aboveground woody biomass density",
   "extent": {
     "spatial": {
       "bbox": [

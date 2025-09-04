@@ -14,7 +14,7 @@ from stactools.icesat2_boreal.stac import (
 
 def test_create_item_in_daac(cog_key_in_daac: str) -> None:
     """Test STAC item creation"""
-    item = create_item(cog_key_in_daac, "file://training_data.csv")
+    item = create_item(cog_key_in_daac, "file://training_data.parquet")
     item.validate()
     assert item.id == "boreal_ht_2020_202501131736787421_0000004"
     assert (
@@ -33,7 +33,7 @@ def test_create_item_in_daac(cog_key_in_daac: str) -> None:
 
 def test_create_item_not_in_daac(cog_key_not_in_daac: str) -> None:
     """Test STAC item creation"""
-    item = create_item(cog_key_not_in_daac, "file://training_data.csv")
+    item = create_item(cog_key_not_in_daac, "file://training_data.parquet")
     item.validate()
     assert item.id == "boreal_ht_2020_202501131736787421_0000003"
     assert not item.properties["icesat2-boreal:in_daac"]

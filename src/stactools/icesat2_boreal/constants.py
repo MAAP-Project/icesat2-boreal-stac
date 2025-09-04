@@ -28,13 +28,13 @@ class AssetType(StrEnum):
 
     COG = "cog"
     # MODEL = "model"
-    TRAINING_DATA_CSV = "training_data_csv"
+    TRAINING_DATA_PARQUET = "training_data_parquet"
 
     def get_file_pattern(self) -> str:
         """Returns the file pattern for this asset type"""
         patterns = {
             self.COG: ".tif",
-            self.TRAINING_DATA_CSV: "_train_data.csv",
+            self.TRAINING_DATA_PARQUET: "_train.parquet",
         }
         return patterns[self]
 
@@ -48,10 +48,9 @@ class AssetType(StrEnum):
         return {member.value for member in cls}
 
 
-VERSION = "v3.0"
+VERSION = "v3.1"
 COLLECTION_ID_FORMAT = "icesat2-boreal-{version}-{variable}"
 
-CSV_MEDIA_TYPE = "text/csv"
 
 RESOLUTION = 30
 BBOX = [-180, 51.6, 180, 78]
@@ -264,7 +263,7 @@ TEXT = {
             "title": "Gridded predictions of aboveground biomass (Mg/ha)",
             "description": "Gridded predictions of aboveground biomass (Mg/ha)",
         },
-        AssetType.TRAINING_DATA_CSV: {
+        AssetType.TRAINING_DATA_PARQUET: {
             "description": "Tabular training data with latitude, longitude, and "
             "biomass observations",
         },
@@ -274,7 +273,7 @@ TEXT = {
             "title": "Gridded predictions of vegetation height (m)",
             "description": "Gridded predictions of vegetation height (m)",
         },
-        AssetType.TRAINING_DATA_CSV: {
+        AssetType.TRAINING_DATA_PARQUET: {
             "description": "Tabular training data with latitude, longitude, and "
             "height observations",
         },
@@ -352,8 +351,8 @@ ITEM_ASSET_PROPERTIES: Dict[AssetType, Dict[str, Any]] = {
             },
         ],
     },
-    AssetType.TRAINING_DATA_CSV: {
-        "type": CSV_MEDIA_TYPE,
+    AssetType.TRAINING_DATA_PARQUET: {
+        "type": MediaType.PARQUET,
         "roles": ["data"],
         "title": "Tabular training data",
     },

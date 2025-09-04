@@ -21,6 +21,7 @@ dependencies = [
     "rio-stac",
     "pystac[validation]>=1.12.0",
     "stactools",
+    "pyproj<3.7.2",
 ]
 
 [dependency-groups]
