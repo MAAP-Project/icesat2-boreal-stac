@@ -1,6 +1,6 @@
 [project]
 name = "stactools-icesat2-boreal"
-version = "0.4.0"
+version = "0.4.1"
 description = "Create STAC Items for icesat2-boreal data products"
 requires-python = ">=3.11"
 authors = [
