@@ -61,7 +61,7 @@ TEMPORAL_INTERVALS = [
     ]
 ]
 
-LICENSE = "CC-BY"
+LICENSE = "CC-BY-4.0"
 
 COLLECTION_DESCRIPTION = """This dataset provides predictions of woody aboveground
 biomass density (AGBD) and vegetation height for high northern latitude forests at 30 m

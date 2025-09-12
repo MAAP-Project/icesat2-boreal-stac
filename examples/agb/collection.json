@@ -148,7 +148,7 @@
       ]
     }
   },
-  "license": "CC-BY",
+  "license": "CC-BY-4.0",
   "providers": [
     {
       "name": "UMD/GEOG",
